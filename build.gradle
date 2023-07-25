@@ -141,7 +141,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     implementation fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-${mc_version}:${ars_version}")
-    implementation fg.deobf("wayoftime.bloodmagic:BloodMagic:${mc_version}-${bm_version}")
+    implementation fg.deobf("maven.modrinth:blood-magic:${mc_version}-${bm_version}")
     implementation fg.deobf("maven.modrinth:occultism:${mc_version}-${occultism_version}")
 
     // Registrate
@@ -216,8 +216,4 @@ if (System.getProperty("idea.sync.active") == "true") {
             it.options.annotationProcessorPath = files()
         }
     }
-}
-
-task printMCVersion {
-    println mc_version
 }
