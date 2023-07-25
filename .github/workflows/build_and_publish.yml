@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: 
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -46,7 +48,6 @@ jobs:
           draft: false
           name: Ars Oscura ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}
           body: ${{ steps.changelog_reader.outputs.changes }}
-          token: ${{ github.token }}
           tag: ${{ github.ref }}
           artifacts: ./build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}-all.jar
           artifactContentType: application/java-archive
