@@ -49,3 +49,25 @@ jobs:
           tag: ${{ github.ref }}
           artifacts: ./build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}-all.jar
           artifactContentType: application/java-archive
+      - name: Upload to Mod Platforms
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: sH3rOUEZ
+          modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
+          # curseforge-id: 430636
+          # curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
+
+          files: |
+            build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}-all.jar
+
+          name: Ars Oscura ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}
+          version: ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}
+          game-versions: |
+            ${{ env.MC_VERSION }}
+          changelog: |-
+            ${{ steps.changelog_reader.outputs.changes }}
+          dependencies: |
+            forge(required)
+            pathouli(required)
+            curios(required)
+            blood-magic(optional)
