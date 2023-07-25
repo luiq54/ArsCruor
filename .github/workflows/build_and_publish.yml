@@ -21,10 +21,10 @@ jobs:
         run: |
             echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
         shell: bash
-      - name : Retrieve Minecraft Version
-        run: |
-            echo "::set-output name=result::$(${{github.workspace}}/gradlew -q printMCVersion)"
-        id: mc_version
+      # - name : Retrieve Minecraft Version
+      #   run: |
+      #       echo "::set-output name=result::$(${{github.workspace}}/gradlew -q printMCVersion)"
+      #   id: mc_version
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
@@ -37,15 +37,15 @@ jobs:
           validation_level: warn
           version: ${{ steps.tag_name.outputs.current_version }}
           path: ./CHANGELOG.md
-      - name: Create Release
-        id: create_release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          draft: false
-          name: Ars Oscura ${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.version }}
-          body: ${{ steps.changelog_reader.outputs.changes }}
-          token: ${{ github.token }}
-          tag: ${{ github.ref }}
-          artifacts: ./build/libs/ars_oscura-${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.result }}-all.jar
-          artifactContentType: application/java-archive
+      # - name: Create Release
+      #   id: create_release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     allowUpdates: true
+      #     draft: false
+      #     name: Ars Oscura ${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.version }}
+      #     body: ${{ steps.changelog_reader.outputs.changes }}
+      #     token: ${{ github.token }}
+      #     tag: ${{ github.ref }}
+      #     artifacts: ./build/libs/ars_oscura-${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.result }}-all.jar
+      #     artifactContentType: application/java-archive
