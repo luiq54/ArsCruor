@@ -26,13 +26,11 @@ jobs:
       - name: Read property from gradle.properties
         id: read_property
         run: echo "MC_VERSION=$(grep -Po 'mc_version=\K.*' gradle.properties)" >> $GITHUB_ENV
-      - name: Show property value
-        run: |
-          echo "Property Value: ${{ env.MC_VERSION }}"
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
+          gradle-home-cache-cleanup: true
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
