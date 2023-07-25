@@ -31,7 +31,6 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          gradle-home-cache-cleanup: true
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
@@ -39,15 +38,15 @@ jobs:
           validation_level: warn
           version: ${{ steps.tag_name.outputs.current_version }}
           path: ./CHANGELOG.md
-      # - name: Create Release
-      #   id: create_release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     allowUpdates: true
-      #     draft: false
-      #     name: Ars Oscura ${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.version }}
-      #     body: ${{ steps.changelog_reader.outputs.changes }}
-      #     token: ${{ github.token }}
-      #     tag: ${{ github.ref }}
-      #     artifacts: ./build/libs/ars_oscura-${{ steps.mc_version.outputs.result }}-${{ steps.tag_name.outputs.result }}-all.jar
-      #     artifactContentType: application/java-archive
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          draft: false
+          name: Ars Oscura ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          token: ${{ github.token }}
+          tag: ${{ github.ref }}
+          artifacts: ./build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.result }}-all.jar
+          artifactContentType: application/java-archive
