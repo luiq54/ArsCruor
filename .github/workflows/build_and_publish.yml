@@ -44,9 +44,9 @@ jobs:
         with:
           allowUpdates: true
           draft: false
-          name: Ars Oscura ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.version }}
+          name: Ars Oscura ${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}
           body: ${{ steps.changelog_reader.outputs.changes }}
           token: ${{ github.token }}
           tag: ${{ github.ref }}
-          artifacts: ./build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.result }}-all.jar
+          artifacts: ./build/libs/ars_oscura-${{ env.MC_VERSION }}-${{ steps.tag_name.outputs.current_version }}-all.jar
           artifactContentType: application/java-archive
