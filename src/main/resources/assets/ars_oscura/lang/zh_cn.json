@@ -1,0 +1,15 @@
+{
+  "alert.ars_oscura.no_lp": "你的灵魂感到虚弱无力……",
+  "ars_nouveau.school.bloodmagic": "血魔法",
+  "ars_oscura.glyph_desc.glyph_sentient_harm": "这是一个高级法术，它能利用你收集的恶魔意志来提高你的伤害输出。",
+  "ars_oscura.glyph_name.glyph_sentient_harm": "意象凌伤",
+  "effect.ars_oscura.serene": "宁静",
+  "item.ars_oscura.apprentice_tome_of_blood": "学徒血之卷轴",
+  "item.ars_oscura.archmage_tome_of_blood": "法师血之卷轴",
+  "item.ars_oscura.mint_tea": "薄荷茶",
+  "item.ars_oscura.novice_tome_of_blood": "新手血之卷轴",
+  "itemGroup.ars_oscura": "黑暗魔艺",
+  "living_upgrade.ars_oscura.mana_bonus": "法力调谐",
+  "tooltip.ars_oscura.sigil_empty": "未存储实体",
+  "tooltip.ars_oscura.sigil_with_entity": "已存储实体：%s"
+}
