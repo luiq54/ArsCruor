@@ -1,19 +1,16 @@
-package com.mystchonky.arsoscura.datagen;
+package com.mystchonky.arsoscura.datagen
 
-import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.init.ArsNouveauIntegration;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart
+import com.mystchonky.arsoscura.ArsOscura
+import com.mystchonky.arsoscura.common.init.ArsNouveauIntegration
+import net.minecraft.data.PackOutput
+import net.minecraftforge.client.model.generators.ItemModelProvider
+import net.minecraftforge.common.data.ExistingFileHelper
+import java.util.function.Consumer
 
-public class GlyphItemModelProvider extends ItemModelProvider {
-    public GlyphItemModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
-        super(packOutput, ArsOscura.MODID, existingFileHelper);
-    }
-
-    @Override
-    protected void registerModels() {
-        ArsNouveauIntegration.registeredSpells.forEach(spell -> basicItem(spell.getRegistryName()));
+class GlyphItemModelProvider(packOutput: PackOutput, existingFileHelper: ExistingFileHelper) :
+    ItemModelProvider(packOutput, ArsOscura.MODID, existingFileHelper) {
+    override fun registerModels() {
+        ArsNouveauIntegration.registeredSpells.forEach { basicItem(it.registryName) }
     }
 }

@@ -1,32 +1,27 @@
-package com.mystchonky.arsoscura.datagen;
+package com.mystchonky.arsoscura.datagen
 
-import com.mystchonky.arsoscura.ArsOscura;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import com.mystchonky.arsoscura.ArsOscura
+import com.mystchonky.arsoscura.datagen.BloodMagicProviders.AlchemyTableProvider
+import com.mystchonky.arsoscura.datagen.BloodMagicProviders.AltarProvider
+import net.minecraftforge.data.event.GatherDataEvent
+import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 
-@Mod.EventBusSubscriber(modid = ArsOscura.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Setup {
-
+@EventBusSubscriber(modid = ArsOscura.MODID, bus = EventBusSubscriber.Bus.MOD)
+object ArsOscuraDataProviders {
     //use runData configuration to generate stuff, event.includeServer() for data, event.includeClient() for assets
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator gen = event.getGenerator();
-        PackOutput output = gen.getPackOutput();
+    fun gatherData(event: GatherDataEvent) {
+        val gen = event.generator
+        val output = gen.packOutput
 
 //        gen.addProvider(event.includeServer(), new ArsProviders.ImbuementProvider(gen));
 //        gen.addProvider(event.includeServer(), new ArsProviders.GlyphProvider(gen));
 //        gen.addProvider(event.includeServer(), new ArsProviders.EnchantingAppProvider(gen));
-
-        gen.addProvider(event.includeServer(), new BloodMagicProviders.AltarProvider(output));
-        gen.addProvider(event.includeServer(), new BloodMagicProviders.AlchemyTableProvider(output));
-        gen.addProvider(event.includeServer(), new BloodMagicProviders.GlyphProvider(gen));
-
-        gen.addProvider(event.includeServer(), new ArsProviders.PatchouliProvider(gen));
-
-        gen.addProvider(event.includeClient(), new GlyphItemModelProvider(output, event.getExistingFileHelper()));
+        gen.addProvider(event.includeServer(), AltarProvider(output))
+        gen.addProvider(event.includeServer(), AlchemyTableProvider(output))
+        gen.addProvider(event.includeServer(), BloodMagicProviders.GlyphProvider(gen))
+        gen.addProvider(event.includeServer(), ArsProviders.PatchouliEntryProvider(gen))
+        gen.addProvider(event.includeClient(), GlyphItemModelProvider(output, event.existingFileHelper))
     }
-
 }

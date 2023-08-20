@@ -1,4 +1,3 @@
-package com.mystchonky.arsoscura.common.util;
+package com.mystchonky.arsoscura.common.util
 
-public class EssenceUtil {
-}
+class EssenceUtil
