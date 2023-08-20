@@ -1,16 +1,15 @@
-package com.mystchonky.arsoscura.client.events;
+package com.mystchonky.arsoscura.client.events
 
-import com.mystchonky.arsoscura.ArsOscura;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import com.mystchonky.arsoscura.ArsOscura
+import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent
+import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = ArsOscura.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClientEventHandler {
-
+@EventBusSubscriber(value = [Dist.CLIENT], modid = ArsOscura.MODID, bus = EventBusSubscriber.Bus.MOD)
+object ClientEventHandler {
     @SubscribeEvent
-    public static void registerOverlays(final RegisterGuiOverlaysEvent event) {
+    fun registerOverlays(event: RegisterGuiOverlaysEvent?) {
 //        event.registerAboveAll("essence_hud", GuiLifeEssenceHUD.OVERLAY);
     }
 }

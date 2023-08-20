@@ -1,5 +1,5 @@
-package com.mystchonky.arsoscura.client;
+package com.mystchonky.arsoscura.client
 
-public class ClientInfo {
-    public static int ticksInGame = 0;
+object ClientInfo {
+    var ticksInGame = 0
 }
