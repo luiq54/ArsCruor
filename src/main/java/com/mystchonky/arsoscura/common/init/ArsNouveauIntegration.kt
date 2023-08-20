@@ -1,51 +1,43 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.init
 
-import com.hollingsworth.arsnouveau.api.familiar.AbstractFamiliarHolder;
-import com.hollingsworth.arsnouveau.api.registry.FamiliarRegistry;
-import com.hollingsworth.arsnouveau.api.registry.GlyphRegistry;
-import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.mystchonky.arsoscura.integration.bloodmagic.BloodMagicIntegration;
-import com.mystchonky.arsoscura.integration.occultism.OccultismIntegration;
-import net.minecraftforge.fml.ModList;
+import com.hollingsworth.arsnouveau.api.familiar.AbstractFamiliarHolder
+import com.hollingsworth.arsnouveau.api.registry.FamiliarRegistry
+import com.hollingsworth.arsnouveau.api.registry.GlyphRegistry
+import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart
+import com.mystchonky.arsoscura.integration.bloodmagic.BloodMagicIntegration
+import com.mystchonky.arsoscura.integration.occultism.OccultismIntegration
+import net.minecraftforge.fml.ModList
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ArsNouveauIntegration {
-
-    public static List<AbstractSpellPart> registeredSpells = new ArrayList<>();
-    public static List<AbstractFamiliarHolder> registeredFamiliars = new ArrayList<>();
-
-    public static void init() {
-        registerGlyphs();
-        registerFamiliars();
+object ArsNouveauIntegration {
+    var registeredSpells: MutableList<AbstractSpellPart> = ArrayList()
+    var registeredFamiliars: MutableList<AbstractFamiliarHolder> = ArrayList()
+    fun init() {
+        registerGlyphs()
+        registerFamiliars()
     }
 
-    public static void postInit() {
-        registerSounds();
+    fun postInit() {
+        registerSounds()
     }
 
-    public static void registerGlyphs() {
+    private fun registerGlyphs() {
         if (ModList.get().isLoaded("bloodmagic"))
-            BloodMagicIntegration.registerGlyphs(ArsNouveauIntegration::registerSpellPart);
+            BloodMagicIntegration.registerGlyphs { registerSpellPart(it) }
     }
 
-    public static void registerFamiliars() {
+    private fun registerFamiliars() {
         if (ModList.get().isLoaded("occultism"))
-            OccultismIntegration.registerFamiliars(ArsNouveauIntegration::registerFamiliars);
+            OccultismIntegration.registerFamiliars { registerFamiliars(it) }
     }
 
-    public static void registerSounds() {
+    private fun registerSounds() {}
+    private fun registerSpellPart(spellPart: AbstractSpellPart) {
+        GlyphRegistry.registerSpell(spellPart)
+        registeredSpells.add(spellPart)
     }
 
-    public static void registerSpellPart(AbstractSpellPart spellPart) {
-        GlyphRegistry.registerSpell(spellPart);
-        registeredSpells.add(spellPart);
+    private fun registerFamiliars(familiarHolder: AbstractFamiliarHolder) {
+        FamiliarRegistry.registerFamiliar(familiarHolder)
+        registeredFamiliars.add(familiarHolder)
     }
-
-    public static void registerFamiliars(AbstractFamiliarHolder familiarHolder) {
-        FamiliarRegistry.registerFamiliar(familiarHolder);
-        registeredFamiliars.add(familiarHolder);
-    }
-
 }

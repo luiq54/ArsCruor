@@ -23,7 +23,6 @@ public class Networking {
 
     public static void registerMessages() {
         INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(ArsOscura.MODID, "network"), () -> "1.0", s -> true, s -> true);
-
     }
 
 

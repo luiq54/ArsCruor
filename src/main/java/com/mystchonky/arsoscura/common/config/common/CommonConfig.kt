@@ -1,12 +1,11 @@
-package com.mystchonky.arsoscura.common.config.common;
+package com.mystchonky.arsoscura.common.config.common
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec
 
-public class CommonConfig {
+class CommonConfig(builder: ForgeConfigSpec.Builder) {
+    val CONVERSION_RATE: ForgeConfigSpec.ConfigValue<Int>
 
-    public final ForgeConfigSpec.ConfigValue<Integer> CONVERSION_RATE;
-
-    public CommonConfig(ForgeConfigSpec.Builder builder) {
-        CONVERSION_RATE = builder.comment("Conversion rate of LP into player mana").define("conversionRate", 10);
+    init {
+        CONVERSION_RATE = builder.comment("Conversion rate of LP into player mana").define("conversionRate", 10)
     }
 }

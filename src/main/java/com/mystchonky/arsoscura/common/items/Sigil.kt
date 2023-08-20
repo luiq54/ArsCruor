@@ -1,42 +1,33 @@
-package com.mystchonky.arsoscura.common.items;
+package com.mystchonky.arsoscura.common.items
 
-import com.mystchonky.arsoscura.common.init.ArsOscuraLang;
-import com.mystchonky.arsoscura.common.util.TooltipUtil;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import com.mystchonky.arsoscura.common.init.ArsOscuraLang
+import com.mystchonky.arsoscura.common.util.TooltipUtil
+import net.minecraft.network.chat.Component
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.level.Level
 
-import java.util.List;
+class Sigil(pProperties: Properties) : Item(pProperties) {
+    constructor() : this(Properties())
 
-public class Sigil extends Item {
-
-    public Sigil(Properties pProperties) {
-        super(pProperties);
-    }
-
-    public Sigil() {
-        this(new Properties());
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        CompoundTag tag = pStack.getTag();
+    override fun appendHoverText(
+        pStack: ItemStack,
+        pLevel: Level?,
+        pTooltipComponents: MutableList<Component>,
+        pIsAdvanced: TooltipFlag
+    ) {
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced)
+        val tag = pStack.tag
         if (tag != null) {
-            String type = tag.getString("entity_type");
-            pTooltipComponents.add(TooltipUtil.withArgs(ArsOscuraLang.SIGIL_WITH_ENTITY, type));
+            val type = tag.getString("entity_type")
+            pTooltipComponents.add(TooltipUtil.withArgs(ArsOscuraLang.SIGIL_WITH_ENTITY, type))
         } else {
-            pTooltipComponents.add(Component.translatable(ArsOscuraLang.SIGIL_EMPTY.getString()));
+            pTooltipComponents.add(Component.translatable(ArsOscuraLang.SIGIL_EMPTY.string))
         }
     }
 
-    @Override
-    public boolean isFoil(ItemStack pStack) {
-        return true;
+    override fun isFoil(pStack: ItemStack): Boolean {
+        return true
     }
-
 }
