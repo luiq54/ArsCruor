@@ -12,8 +12,8 @@ import net.minecraft.data.DataGenerator
 import net.minecraft.world.item.Item
 import java.nio.file.Path
 
-object ArsProviders {
-    var root = ArsOscura.MODID
+object ArsNouveauProviders {
+    const val root = ArsOscura.MODID
 
     class GlyphProvider(generatorIn: DataGenerator) : GlyphRecipeProvider(generatorIn) {
         override fun collectJsons(pOutput: CachedOutput) {

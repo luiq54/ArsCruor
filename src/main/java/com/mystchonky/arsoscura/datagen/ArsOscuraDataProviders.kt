@@ -21,7 +21,7 @@ object ArsOscuraDataProviders {
         gen.addProvider(event.includeServer(), AltarProvider(output))
         gen.addProvider(event.includeServer(), AlchemyTableProvider(output))
         gen.addProvider(event.includeServer(), BloodMagicProviders.GlyphProvider(gen))
-        gen.addProvider(event.includeServer(), ArsProviders.PatchouliEntryProvider(gen))
+        gen.addProvider(event.includeServer(), ArsNouveauProviders.PatchouliEntryProvider(gen))
         gen.addProvider(event.includeClient(), GlyphItemModelProvider(output, event.existingFileHelper))
     }
 }
