@@ -1,19 +1,13 @@
-package com.mystchonky.arsoscura.integration.bloodmagic.client.renderer.item;
+package com.mystchonky.arsoscura.integration.bloodmagic.client.renderer.item
 
-import com.hollingsworth.arsnouveau.client.renderer.item.SpellBookRenderer;
-import com.hollingsworth.arsnouveau.common.items.SpellBook;
-import com.mystchonky.arsoscura.ArsOscura;
-import net.minecraft.resources.ResourceLocation;
+import com.hollingsworth.arsnouveau.client.renderer.item.SpellBookRenderer
+import com.hollingsworth.arsnouveau.common.items.SpellBook
+import com.mystchonky.arsoscura.ArsOscura
+import net.minecraft.resources.ResourceLocation
 
-public class TomeOfBloodRenderer extends SpellBookRenderer {
-
-    public TomeOfBloodRenderer() {
-        super();
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(SpellBook o) {
-        String base = "textures/item/spellbook_black";
-        return new ResourceLocation(ArsOscura.MODID, base + ".png");
+class TomeOfBloodRenderer : SpellBookRenderer() {
+    override fun getTextureLocation(o: SpellBook): ResourceLocation {
+        val base = "textures/item/spellbook_black"
+        return ResourceLocation(ArsOscura.MODID, "$base.png")
     }
 }

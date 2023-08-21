@@ -1,24 +1,24 @@
-package com.mystchonky.arsoscura.integration.bloodmagic;
+package com.mystchonky.arsoscura.integration.bloodmagic
 
-import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.hollingsworth.arsnouveau.api.spell.SpellSchool;
-import com.mystchonky.arsoscura.integration.bloodmagic.glyphs.EffectSentientHarm;
-import net.minecraftforge.common.MinecraftForge;
+import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart
+import com.hollingsworth.arsnouveau.api.spell.SpellSchool
+import com.mystchonky.arsoscura.integration.bloodmagic.glyphs.EffectSentientHarm
+import com.mystchonky.arsoscura.integration.bloodmagic.init.BloodMagicItems
+import com.mystchonky.arsoscura.integration.bloodmagic.init.BloodMagicMobEffects
+import com.mystchonky.arsoscura.integration.bloodmagic.init.LivingUpgradeRegistry
+import net.minecraftforge.common.MinecraftForge
+import java.util.function.Consumer
 
-import java.util.function.Consumer;
-
-public class BloodMagicIntegration {
-    public static SpellSchool BLOODMAGIC = new SpellSchool("bloodmagic");
-
-    public static void init() {
-        BloodMagicItems.register();
-        LivingUpgradeRegistry.register();
-        BloodMagicMobEffects.register();
-
-        MinecraftForge.EVENT_BUS.register(EventHandler.class);
+object BloodMagicIntegration {
+    var BLOODMAGIC = SpellSchool("bloodmagic")
+    fun init() {
+        BloodMagicItems.register()
+        LivingUpgradeRegistry.register()
+        BloodMagicMobEffects.register()
+        MinecraftForge.EVENT_BUS.register(EventHandler::class)
     }
 
-    public static void registerGlyphs(Consumer<AbstractSpellPart> register) {
-        register.accept(EffectSentientHarm.INSTANCE);
+    fun registerGlyphs(register: Consumer<AbstractSpellPart>) {
+        register.accept(EffectSentientHarm.INSTANCE)
     }
 }

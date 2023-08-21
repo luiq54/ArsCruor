@@ -1,49 +1,52 @@
-package com.mystchonky.arsoscura.integration.bloodmagic;
+package com.mystchonky.arsoscura.integration.bloodmagic
 
-import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
-import com.hollingsworth.arsnouveau.api.event.SpellCostCalcEvent;
-import com.hollingsworth.arsnouveau.api.spell.Spell;
-import com.hollingsworth.arsnouveau.api.spell.SpellContext;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import wayoftime.bloodmagic.core.living.LivingStats;
-import wayoftime.bloodmagic.core.living.LivingUtil;
-import wayoftime.bloodmagic.event.SacrificeKnifeUsedEvent;
+import com.hollingsworth.arsnouveau.api.event.SpellCastEvent
+import com.hollingsworth.arsnouveau.api.event.SpellCostCalcEvent
+import com.hollingsworth.arsnouveau.api.util.ManaUtil
+import com.mystchonky.arsoscura.integration.bloodmagic.init.BloodMagicMobEffects
+import com.mystchonky.arsoscura.integration.bloodmagic.init.LivingUpgradeRegistry
+import net.minecraft.world.entity.player.Player
+import net.minecraftforge.eventbus.api.SubscribeEvent
+import wayoftime.bloodmagic.core.living.LivingStats
+import wayoftime.bloodmagic.core.living.LivingUtil
+import wayoftime.bloodmagic.event.SacrificeKnifeUsedEvent
 
-import static com.hollingsworth.arsnouveau.api.util.ManaUtil.getPlayerDiscounts;
-
-class EventHandler {
+internal object EventHandler {
     @SubscribeEvent
-    public static void sacrificeKnifeUsed(SacrificeKnifeUsedEvent event) {
+    fun sacrificeKnifeUsed(event: SacrificeKnifeUsedEvent) {
         if (event.player.hasEffect(BloodMagicMobEffects.SERENE_EFFECT.get())) {
-            event.lpAdded *= 1.1;
+            event.lpAdded = (event.lpAdded * 1.1).toInt()
         }
     }
 
     @SubscribeEvent
-    public static void spellDiscount(SpellCostCalcEvent event) {
-        if (event.context.getUnwrappedCaster() instanceof Player player) {
-            if (LivingUtil.hasFullSet(player)) {
-                LivingStats stats = LivingStats.fromPlayer(player);
-                int level = stats.getLevel(LivingUpgradeRegistry.MANA_UPGRADE.getKey());
-                float discount = level / 10;
-                event.currentCost *= 1 - discount;
+    fun spellDiscount(event: SpellCostCalcEvent) {
+        val caster = event.context.unwrappedCaster
+        if (caster is Player) {
+            if (LivingUtil.hasFullSet(caster)) {
+                val stats = LivingStats.fromPlayer(caster)
+                val level = stats.getLevel(LivingUpgradeRegistry.MANA_UPGRADE.key)
+                val discount = (level / 10).toFloat()
+                event.currentCost = (event.currentCost * (1 - discount)).toInt()
             }
         }
-
     }
 
     @SubscribeEvent
-    public static void awardXPForSpellCast(SpellCastEvent event) {
-        if (event.context.getUnwrappedCaster() instanceof Player player) {
-            if (LivingUtil.hasFullSet(player)) {
-                Spell spell = event.spell;
-                SpellContext spellContext = event.context;
-
-                int cost = spellContext.getSpell().getCost() - getPlayerDiscounts(spellContext.getUnwrappedCaster(), spell, spellContext.getCasterTool());
-                cost = Math.max(cost, 0);
-                int xpAward = cost / 50;
-                LivingUtil.applyNewExperience(player, LivingUpgradeRegistry.MANA_UPGRADE, xpAward);
+    fun awardXPForSpellCast(event: SpellCastEvent) {
+        val caster = event.context.unwrappedCaster
+        if (caster is Player) {
+            if (LivingUtil.hasFullSet(caster)) {
+                val spell = event.spell
+                val spellContext = event.context
+                var cost = spellContext.spell.cost - ManaUtil.getPlayerDiscounts(
+                    spellContext.unwrappedCaster,
+                    spell,
+                    spellContext.casterTool
+                )
+                cost = Math.max(cost, 0)
+                val xpAward = cost / 50
+                LivingUtil.applyNewExperience(caster, LivingUpgradeRegistry.MANA_UPGRADE, xpAward.toDouble())
             }
         }
     }

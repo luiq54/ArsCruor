@@ -1,7 +1,5 @@
 package com.mystchonky.arsoscura
 
-import com.hollingsworth.arsnouveau.setup.proxy.IProxy
-import com.mystchonky.arsoscura.ArsOscura
 import com.mystchonky.arsoscura.common.config.BaseConfig
 import com.mystchonky.arsoscura.common.init.ArsNouveauIntegration
 import com.mystchonky.arsoscura.common.init.ArsOscuraItems
@@ -15,7 +13,6 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.Lazy
 import net.minecraftforge.event.server.ServerStartingEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraftforge.fml.DistExecutor
 import net.minecraftforge.fml.ModList
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.common.Mod
@@ -39,7 +36,7 @@ object ArsOscura {
         return REGISTRATE.get()
     }
 
-    fun prefix(path: String?): ResourceLocation {
+    fun prefix(path: String): ResourceLocation {
         return ResourceLocation(MODID, path)
     }
 

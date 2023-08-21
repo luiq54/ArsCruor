@@ -6,7 +6,7 @@ import com.hollingsworth.arsnouveau.setup.registry.RegistryHelper
 import com.mystchonky.arsoscura.ArsOscura
 import com.mystchonky.arsoscura.common.util.RecipeUtil.modCompatGlyphRecipe
 import com.mystchonky.arsoscura.common.util.RecipeUtil.modCompatRecipe
-import com.mystchonky.arsoscura.integration.bloodmagic.BloodMagicItems
+import com.mystchonky.arsoscura.integration.bloodmagic.init.BloodMagicItems
 import com.mystchonky.arsoscura.integration.bloodmagic.glyphs.EffectSentientHarm
 import net.minecraft.data.CachedOutput
 import net.minecraft.data.DataGenerator
@@ -70,7 +70,7 @@ object BloodMagicProviders {
         }
     }
 
-    class AlchemyTableProvider(packOutput: PackOutput?) : RecipeProvider(packOutput) {
+    class AlchemyTableProvider(packOutput: PackOutput) : RecipeProvider(packOutput) {
         var basePath = "alchemytable/"
         override fun getName(): String {
             return "Alchemy Table recipes"

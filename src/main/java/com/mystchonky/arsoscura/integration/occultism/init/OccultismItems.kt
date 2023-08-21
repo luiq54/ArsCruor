@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.integration.occultism
+package com.mystchonky.arsoscura.integration.occultism.init
 
 import com.mystchonky.arsoscura.ArsOscura
 
