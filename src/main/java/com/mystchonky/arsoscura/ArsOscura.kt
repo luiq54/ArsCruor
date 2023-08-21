@@ -7,7 +7,6 @@ import com.mystchonky.arsoscura.common.init.ArsOscuraLang
 import com.mystchonky.arsoscura.common.network.Networking
 import com.mystchonky.arsoscura.integration.bloodmagic.BloodMagicIntegration
 import com.mystchonky.arsoscura.integration.occultism.OccultismIntegration
-import com.tterrag.registrate.Registrate
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.Lazy
@@ -19,10 +18,10 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
 import net.minecraftforge.fml.loading.FMLPaths
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import thedarkcolour.kotlinforforge.forge.MOD_BUS
 import java.io.IOException
 import java.nio.file.Files
 
@@ -62,9 +61,8 @@ object ArsOscura {
         if (ModList.get().isLoaded("bloodmagic")) BloodMagicIntegration.init()
         if (ModList.get().isLoaded("occultism")) OccultismIntegration.init()
 
-        val modbus = FMLJavaModLoadingContext.get().modEventBus
-        modbus.addListener { event: FMLCommonSetupEvent -> setup(event) }
-        modbus.addListener { event: FMLClientSetupEvent -> doClientStuff(event) }
+        MOD_BUS.addListener { event: FMLCommonSetupEvent -> setup(event) }
+        MOD_BUS.addListener { event: FMLClientSetupEvent -> doClientStuff(event) }
         MinecraftForge.EVENT_BUS.register(this)
     }
 
