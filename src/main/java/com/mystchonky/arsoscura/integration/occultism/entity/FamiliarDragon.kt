@@ -1,49 +1,36 @@
-package com.mystchonky.arsoscura.integration.occultism.entity;
+package com.mystchonky.arsoscura.integration.occultism.entity
 
-import com.hollingsworth.arsnouveau.api.familiar.IFamiliar;
-import com.klikli_dev.occultism.common.entity.familiar.DragonFamiliarEntity;
-import com.klikli_dev.occultism.registry.OccultismEntities;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
+import com.hollingsworth.arsnouveau.api.familiar.IFamiliar
+import com.klikli_dev.occultism.common.entity.familiar.DragonFamiliarEntity
+import com.klikli_dev.occultism.registry.OccultismEntities
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.level.Level
+import java.util.*
 
-import java.util.UUID;
-
-public class FamiliarDragon extends DragonFamiliarEntity implements IFamiliar {
-
-    public ResourceLocation holderID;
-
-    public FamiliarDragon(EntityType<? extends DragonFamiliarEntity> ent, Level world) {
-        super(ent, world);
-
-    }
-
-    @Override
-    public EntityType<?> getType() {
-        return OccultismEntities.DRAGON_FAMILIAR.get();
-    }
-
-    @Override
-    public ResourceLocation getHolderID() {
-        return holderID;
-    }
-
-    @Override
-    public void setHolderID(ResourceLocation id) {
-        this.holderID = id;
-    }
-
-
-    // Map Ars functions to Occultisms
-    @Override
-    public UUID getOwnerID() {
-        return getOwnerId();
-    }
-
-    @Override
-    public void setOwnerID(UUID uuid) {
-        setFamiliarOwner((LivingEntity) ((ServerLevel) level()).getEntity(uuid));
-    }
-}
+//class FamiliarDragon(ent: EntityType<DragonFamiliarEntity>, world: Level?) : DragonFamiliarEntity(ent, world),
+//    IFamiliar {
+//    lateinit var holderID: ResourceLocation
+//    override fun getType(): EntityType<*> {
+//        return OccultismEntities.DRAGON_FAMILIAR.get()
+//    }
+//
+//    override fun getHolderID(): ResourceLocation {
+//        return holderID
+//    }
+//
+//    override fun setHolderID(id: ResourceLocation) {
+//        holderID = id
+//    }
+//
+//    // Map Ars functions to Occultisms
+//    override fun getOwnerID(): UUID {
+//        return ownerId
+//    }
+//
+//    override fun setOwnerID(uuid: UUID) {
+//        familiarOwner = (level() as ServerLevel).getEntity(uuid) as LivingEntity?
+//    }
+//}

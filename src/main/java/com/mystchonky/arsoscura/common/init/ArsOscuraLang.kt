@@ -2,7 +2,6 @@ package com.mystchonky.arsoscura.common.init
 
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart
 import com.mystchonky.arsoscura.ArsOscura
-import com.mystchonky.arsoscura.ArsOscura.registrate
 import com.mystchonky.arsoscura.integration.bloodmagic.BloodMagicIntegration
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
@@ -10,7 +9,7 @@ import net.minecraft.resources.ResourceLocation
 import java.util.function.Consumer
 
 object ArsOscuraLang {
-    private val REGISTRATE = registrate()
+    private val REGISTRATE = ArsOscura.registrate()
     val prefix: (String) -> ResourceLocation = { ArsOscura.prefix(it) }
     val SIGIL_EMPTY: Component = REGISTRATE.addLang("tooltip", prefix("sigil_empty"), "No entity stored")
     val SIGIL_WITH_ENTITY: MutableComponent =

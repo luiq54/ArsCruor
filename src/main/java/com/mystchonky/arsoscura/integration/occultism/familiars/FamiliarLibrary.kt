@@ -1,9 +1,8 @@
-package com.mystchonky.arsoscura.integration.occultism.familiars;
+package com.mystchonky.arsoscura.integration.occultism.familiars
 
-public class FamiliarLibrary {
-    public static final String FAMILIAR_DRAGON = appendFamiliar("dragon");
-
-    public static String appendFamiliar(String fam) {
-        return "familiar_" + fam;
+object FamiliarLibrary {
+    val FAMILIAR_DRAGON = appendFamiliar("dragon")
+    private fun appendFamiliar(name: String): String {
+        return "familiar_$name"
     }
 }

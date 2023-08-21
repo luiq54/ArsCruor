@@ -1,73 +1,76 @@
-package com.mystchonky.arsoscura.integration.occultism.mob_jar;
+package com.mystchonky.arsoscura.integration.occultism.mob_jar
 
-import com.hollingsworth.arsnouveau.api.mob_jar.JarBehavior;
-import com.hollingsworth.arsnouveau.common.block.tile.MobJarTile;
-import com.klikli_dev.occultism.api.OccultismAPI;
-import com.klikli_dev.occultism.common.entity.spirit.SpiritEntity;
-import com.klikli_dev.occultism.exceptions.ItemHandlerMissingException;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
+import com.hollingsworth.arsnouveau.api.mob_jar.JarBehavior
+import com.hollingsworth.arsnouveau.common.block.tile.MobJarTile
+import com.klikli_dev.occultism.api.OccultismAPI
+import com.klikli_dev.occultism.common.entity.job.SpiritJob
+import com.klikli_dev.occultism.common.entity.spirit.SpiritEntity
+import com.klikli_dev.occultism.exceptions.ItemHandlerMissingException
+import net.minecraft.core.BlockPos
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.AABB
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraftforge.items.ItemHandlerHelper
 
-import java.util.List;
-
-public class SpiritBehaviour<T extends SpiritEntity> extends JarBehavior<T> {
-
-    @Override
-    public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit, MobJarTile tile) {
-        if (world.isClientSide)
-            return;
-        ItemStack heldStack = player.getItemInHand(handIn);
-        SpiritEntity spirit = entityFromJar(tile);
-        OccultismAPI api = OccultismAPI.get();
-
-        api.getItemsToPickUp(spirit).ifPresent(ingredients -> {
-            if (ingredients.stream().anyMatch(item -> item.test(heldStack))) {
-                ItemStack duplicate = heldStack.copy();
-                ItemStackHandler handler = spirit.itemStackHandler.orElseThrow(ItemHandlerMissingException::new);
-                if (ItemHandlerHelper.insertItemStacked(handler, duplicate, true).getCount() < duplicate.getCount()) {
-                    ItemStack remaining = ItemHandlerHelper.insertItemStacked(handler, duplicate, false);
-                    heldStack.setCount(remaining.getCount());
+class SpiritBehaviour<T : SpiritEntity> : JarBehavior<T>() {
+    override fun use(
+        state: BlockState,
+        world: Level,
+        pos: BlockPos,
+        player: Player,
+        handIn: InteractionHand,
+        hit: BlockHitResult,
+        tile: MobJarTile
+    ) {
+        if (world.isClientSide) return
+        val heldStack = player.getItemInHand(handIn)
+        val spirit: SpiritEntity = entityFromJar(tile)
+        val api = OccultismAPI.get()
+        api.getItemsToPickUp(spirit).ifPresent { ingredients: List<Ingredient> ->
+            if (ingredients.stream().anyMatch { item: Ingredient -> item.test(heldStack) }) {
+                val duplicate = heldStack.copy()
+                val handler = spirit.itemStackHandler.orElseThrow { ItemHandlerMissingException() }
+                if (ItemHandlerHelper.insertItemStacked(handler, duplicate, true).count < duplicate.count) {
+                    val remaining = ItemHandlerHelper.insertItemStacked(handler, duplicate, false)
+                    heldStack.count = remaining.count
                 }
             }
-        });
-
+        }
     }
 
-    @Override
-    public void tick(MobJarTile tile) {
-        if (tile.getLevel().isClientSide)
-            return;
-        SpiritEntity spirit = entityFromJar(tile);
-        if (!spirit.isInitialized())
-            spirit.init();
+    override fun tick(tile: MobJarTile) {
+        if (tile.level!!.isClientSide) return
+        val spirit: SpiritEntity = entityFromJar(tile)
+        if (!spirit.isInitialized)
+            spirit.init()
 
-        if (tile.getLevel().getRandom().nextInt(20) == 0) {
-            List<ItemEntity> itemEntities = spirit.level().getEntitiesOfClass(ItemEntity.class, new AABB(tile.getBlockPos()).inflate(3), ItemEntity::isAlive);
-            if (!itemEntities.isEmpty()) {
-                ItemEntity itemEntity = itemEntities.stream().filter(item -> OccultismAPI.get().canPickupItem(spirit, item).orElse(false)).findFirst().orElse(null);
+        if (tile.level!!.getRandom().nextInt(20) == 0) {
+            val itemEntities = spirit.level().getEntitiesOfClass(
+                ItemEntity::class.java, AABB(tile.blockPos).inflate(3.0)
+            ) { it.isAlive }
+            if (itemEntities.isNotEmpty()) {
+                val itemEntity: ItemEntity? = itemEntities.stream()
+                    .filter { OccultismAPI.get().canPickupItem(spirit, it).orElse(false) }
+                    .findFirst()
+                    .orElse(null)
                 if (itemEntity != null) {
-                    ItemStack duplicate = itemEntity.getItem().copy();
-                    ItemStackHandler handler = spirit.itemStackHandler.orElseThrow(ItemHandlerMissingException::new);
-                    if (ItemHandlerHelper.insertItemStacked(handler, duplicate, true).getCount() < duplicate.getCount()) {
-                        ItemStack remaining = ItemHandlerHelper.insertItemStacked(handler, duplicate, false);
-                        itemEntity.getItem().setCount(remaining.getCount());
+                    val duplicate = itemEntity.item.copy()
+                    val handler = spirit.itemStackHandler.orElseThrow { ItemHandlerMissingException() }
+                    if (ItemHandlerHelper.insertItemStacked(handler, duplicate, true).count < duplicate.count) {
+                        val remaining = ItemHandlerHelper.insertItemStacked(handler, duplicate, false)
+                        itemEntity.item.count = remaining.count
                     }
                 }
             }
         }
-        spirit.getJob().ifPresent(spiritJob -> {
-            spiritJob.update();
-            tile.updateBlock();
-        });
+        spirit.job.ifPresent {
+            it.update()
+            tile.updateBlock()
+        }
     }
-
 }

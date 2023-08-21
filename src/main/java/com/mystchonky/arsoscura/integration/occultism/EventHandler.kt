@@ -1,4 +1,3 @@
-package com.mystchonky.arsoscura.integration.occultism;
+package com.mystchonky.arsoscura.integration.occultism
 
-class EventHandler {
-}
+internal class EventHandler
