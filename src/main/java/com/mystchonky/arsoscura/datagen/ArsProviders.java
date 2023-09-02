@@ -1,29 +1,18 @@
 package com.mystchonky.arsoscura.datagen;
 
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
-import com.hollingsworth.arsnouveau.api.familiar.AbstractFamiliarHolder;
-import com.hollingsworth.arsnouveau.api.ritual.AbstractRitual;
-import com.hollingsworth.arsnouveau.api.spell.AbstractCastMethod;
-import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import com.hollingsworth.arsnouveau.common.crafting.recipes.GlyphRecipe;
 import com.hollingsworth.arsnouveau.common.crafting.recipes.ImbuementRecipe;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
 import com.hollingsworth.arsnouveau.common.datagen.GlyphRecipeProvider;
 import com.hollingsworth.arsnouveau.common.datagen.ImbuementRecipeProvider;
-import com.hollingsworth.arsnouveau.common.datagen.patchouli.*;
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.init.ArsNouveauIntegration;
+import com.mystchonky.arsoscura.common.init.Integrations;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ItemLike;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 import static com.hollingsworth.arsnouveau.setup.registry.RegistryHelper.getRegistryName;
@@ -137,7 +126,7 @@ public class ArsProviders {
 
         @Override
         public void addEntries() {
-            for (AbstractSpellPart spell : ArsNouveauIntegration.registeredSpells) {
+            for (AbstractSpellPart spell : Integrations.registeredSpells) {
                 addGlyphPage(spell);
             }
         }
