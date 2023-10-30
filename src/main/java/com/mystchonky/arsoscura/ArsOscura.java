@@ -4,9 +4,9 @@ import com.hollingsworth.arsnouveau.setup.proxy.ClientProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.IProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.ServerProxy;
 import com.mystchonky.arsoscura.common.config.BaseConfig;
-import com.mystchonky.arsoscura.common.init.Integrations;
 import com.mystchonky.arsoscura.common.init.ArsOscuraItems;
 import com.mystchonky.arsoscura.common.init.ArsOscuraLang;
+import com.mystchonky.arsoscura.common.init.Integrations;
 import com.mystchonky.arsoscura.common.network.Networking;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -38,9 +37,6 @@ public class ArsOscura {
 
     private static final Lazy<Registrate> REGISTRATE = Lazy.of(() -> Registrate.create(MODID));
     public static final Logger LOGGER = LogManager.getLogger();
-    public static final boolean isBloodMagicLoaded = ModList.get().isLoaded("bloodmagic");
-    public static final boolean isOccultismLoaded = ModList.get().isLoaded("occultism");
-
     public static Registrate registrate() {
         return REGISTRATE.get();
     }

@@ -1,15 +1,8 @@
 pluginManagement {
     repositories {
-        //        maven {
-//            name = 'MinecraftForge'
-//            url = 'https://maven.neoforged.net/releases'
-//        }
         maven {
-            url = 'https://maven.minecraftforge.net/'
-            content {
-                includeGroup "net.minecraftforge.gradle"
-                includeGroup "net.minecraftforge"
-            }
+            name = 'MinecraftForge'
+            url = 'https://maven.neoforged.net/releases'
         }
         maven {
             name "Sponge"
