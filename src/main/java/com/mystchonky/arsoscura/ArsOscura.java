@@ -4,9 +4,9 @@ import com.hollingsworth.arsnouveau.setup.proxy.ClientProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.IProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.ServerProxy;
 import com.mystchonky.arsoscura.common.config.BaseConfig;
-import com.mystchonky.arsoscura.common.init.ArsOscuraItems;
-import com.mystchonky.arsoscura.common.init.ArsOscuraLang;
-import com.mystchonky.arsoscura.common.init.Integrations;
+import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
+import com.mystchonky.arsoscura.common.init.ItemsRegistry;
+import com.mystchonky.arsoscura.common.init.LangRegistry;
 import com.mystchonky.arsoscura.common.network.Networking;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.resources.ResourceLocation;
@@ -54,9 +54,9 @@ public class ArsOscura {
         ctx.registerConfig(ModConfig.Type.COMMON, BaseConfig.COMMON_SPEC, MODID + "/base-common.toml");
         ctx.registerConfig(ModConfig.Type.CLIENT, BaseConfig.CLIENT_SPEC, MODID + "/base-client.toml");
 
-        ArsOscuraItems.register();
-        Integrations.init();
-        ArsOscuraLang.register();
+        ItemsRegistry.register();
+        IntegrationRegistry.init();
+        LangRegistry.register();
 
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(this::setup);
@@ -70,7 +70,7 @@ public class ArsOscura {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        Integrations.postInit();
+        IntegrationRegistry.postInit();
         Networking.registerMessages();
     }
 

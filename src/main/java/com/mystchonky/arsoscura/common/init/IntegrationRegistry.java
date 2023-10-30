@@ -8,14 +8,13 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Integrations {
+public class IntegrationRegistry {
 
 
     public static List<AbstractSpellPart> registeredSpells = new ArrayList<>();
     public static List<AbstractFamiliarHolder> registeredFamiliars = new ArrayList<>();
 
     public static void init() {
-
         registerGlyphs();
         registerFamiliars();
     }
