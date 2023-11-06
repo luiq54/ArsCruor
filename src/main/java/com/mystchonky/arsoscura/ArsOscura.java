@@ -4,6 +4,7 @@ import com.hollingsworth.arsnouveau.setup.proxy.ClientProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.IProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.ServerProxy;
 import com.mystchonky.arsoscura.common.config.BaseConfig;
+import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
 import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
 import com.mystchonky.arsoscura.common.init.ItemsRegistry;
 import com.mystchonky.arsoscura.common.init.LangRegistry;
@@ -54,8 +55,10 @@ public class ArsOscura {
         ctx.registerConfig(ModConfig.Type.COMMON, BaseConfig.COMMON_SPEC, MODID + "/base-common.toml");
         ctx.registerConfig(ModConfig.Type.CLIENT, BaseConfig.CLIENT_SPEC, MODID + "/base-client.toml");
 
-        ItemsRegistry.register();
         IntegrationRegistry.init();
+
+        ItemsRegistry.register();
+        EnchantmentRegistry.register();
         LangRegistry.register();
 
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
