@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
 import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
 import net.minecraft.world.InteractionHand;
@@ -17,12 +18,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Debug(export = true)
 @Mixin(TridentItem.class)
 public abstract class TridentMixin implements IDisplayMana {
 
@@ -68,21 +71,23 @@ public abstract class TridentMixin implements IDisplayMana {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInWaterOrRain()Z")
     )
     public boolean rainCheck(Player player, Operation<Boolean> original, @Share("chargeMana") LocalBooleanRef usedMana) {
+        ArsOscura.LOGGER.info("rain check yall");
         if (usedMana.get()) {
             return true;
         }
-        return original.call();
+        return original.call(player);
     }
 
-    @Inject(method = "releaseUsing", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/player/Player;startAutoSpinAttack(I)V"))
+    @Inject(method = "releaseUsing", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/entity/player/Player;startAutoSpinAttack(I)V"))
     public void manaCost(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft, CallbackInfo ci, @Share("chargeMana") LocalBooleanRef usedMana) {
+        ArsOscura.LOGGER.info("try cost mana");
         if (usedMana.get()) {
             Player player = (Player) pEntityLiving;
-            IManaCap manaCap = CapabilityRegistry.getMana(player).orElse(null);
             //TODO: Use configs
-            if (manaCap != null) {
-                manaCap.removeMana(25);
-            }
+            CapabilityRegistry.getMana(player).ifPresent(manaCap -> manaCap.removeMana(25));
+            ArsOscura.LOGGER.info("mana yoink");
+        } else {
+            ArsOscura.LOGGER.info("no mana for you");
 
         }
     }
