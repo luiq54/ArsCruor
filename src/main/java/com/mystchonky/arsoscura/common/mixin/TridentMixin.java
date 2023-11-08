@@ -1,13 +1,11 @@
 package com.mystchonky.arsoscura.common.mixin;
 
 import com.hollingsworth.arsnouveau.api.client.IDisplayMana;
-import com.hollingsworth.arsnouveau.api.mana.IManaCap;
 import com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
-import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
 import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
 import net.minecraft.world.InteractionHand;
@@ -18,14 +16,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Debug(export = true)
 @Mixin(TridentItem.class)
 public abstract class TridentMixin implements IDisplayMana {
 
@@ -39,26 +35,24 @@ public abstract class TridentMixin implements IDisplayMana {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getEnchantmentLevel(EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get()) > 0) {
             if (!player.isInWaterOrRain()) {
-                IManaCap manaCap = CapabilityRegistry.getMana(player).orElse(null);
-                //TODO: Use configs
-                if (manaCap == null || manaCap.getCurrentMana() < 25) {
-                    cir.setReturnValue(InteractionResultHolder.fail(stack));
-                    cir.cancel();
-                }
+                CapabilityRegistry.getMana(player).ifPresent(manaCap -> {
+                    //TODO: Use configs
+                    if (manaCap.getCurrentMana() < 25) {
+                        cir.setReturnValue(InteractionResultHolder.fail(stack));
+                        cir.cancel();
+                    }
+                });
 
             }
         }
     }
 
-    @WrapOperation(
-            method = "releaseUsing",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I")
-    )
-    public int getRiptideLevel(ItemStack stack, Operation<Integer> original, @Share("chargeMana") LocalBooleanRef shouldCharge) {
+    @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I"))
+    public int getRiptideLevel(ItemStack stack, Operation<Integer> original, @Share("riptide") LocalBooleanRef usedManaRiptide) {
         if (EnchantmentHelper.getRiptide(stack) <= 0) {
             int level = stack.getEnchantmentLevel(EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get());
             if (level > 0) {
-                shouldCharge.set(true);
+                usedManaRiptide.set(true);
             }
             return level;
         }
@@ -66,29 +60,22 @@ public abstract class TridentMixin implements IDisplayMana {
 
     }
 
-    @WrapOperation(
-            method = "releaseUsing",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInWaterOrRain()Z")
-    )
-    public boolean rainCheck(Player player, Operation<Boolean> original, @Share("chargeMana") LocalBooleanRef usedMana) {
-        ArsOscura.LOGGER.info("rain check yall");
-        if (usedMana.get()) {
-            return true;
+    @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInWaterOrRain()Z"))
+    public boolean rainCheck(Player player, Operation<Boolean> original, @Share("riptide") LocalBooleanRef usedManaRiptide, @Share("useMana") LocalBooleanRef useMana) {
+        boolean isRaining = original.call(player);
+        if (!isRaining && usedManaRiptide.get()) {
+            isRaining = true;
+            useMana.set(true);
         }
-        return original.call(player);
+        return isRaining;
     }
 
     @Inject(method = "releaseUsing", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/entity/player/Player;startAutoSpinAttack(I)V"))
-    public void manaCost(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft, CallbackInfo ci, @Share("chargeMana") LocalBooleanRef usedMana) {
-        ArsOscura.LOGGER.info("try cost mana");
+    public void manaCost(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft, CallbackInfo ci, @Share("useMana") LocalBooleanRef usedMana) {
         if (usedMana.get()) {
             Player player = (Player) pEntityLiving;
             //TODO: Use configs
             CapabilityRegistry.getMana(player).ifPresent(manaCap -> manaCap.removeMana(25));
-            ArsOscura.LOGGER.info("mana yoink");
-        } else {
-            ArsOscura.LOGGER.info("no mana for you");
-
         }
     }
 }
