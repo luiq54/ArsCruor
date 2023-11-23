@@ -9,8 +9,10 @@ import com.mystchonky.arsoscura.common.recipe.EnchantmentUpgradeRecipe;
 import com.mystchonky.arsoscura.datagen.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraftforge.common.Tags;
 
 import java.nio.file.Path;
 
@@ -27,6 +29,7 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
     @Override
     public void collectJsons(CachedOutput pOutput) {
         recipes.add(buildEnchantmentUpgrade(ApparatusRecipeBuilder.builder()
+                        .withReagent(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                         .withResult(ItemsRegistry.SOURCE_GEM)
                         .withPedestalItem(ItemsRegistry.JUMP_RING).build(),
                 Enchantments.RIPTIDE, EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get(), 5000));
@@ -41,7 +44,7 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
     }
 
     public EnchantmentUpgradeRecipe buildEnchantmentUpgrade(EnchantingApparatusRecipe recipe, Enchantment baseEnchantment, Enchantment resultEnchantment, int source) {
-        return new EnchantmentUpgradeRecipe(recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
+        return new EnchantmentUpgradeRecipe(recipe.reagent, recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
     }
 
     @Override

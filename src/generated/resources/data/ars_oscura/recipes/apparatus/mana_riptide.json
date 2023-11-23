@@ -8,6 +8,11 @@
       }
     }
   ],
+  "reagent": [
+    {
+      "tag": "forge:tools/tridents"
+    }
+  ],
   "resultEnchantment": "ars_oscura:mana_riptide",
   "sourceCost": 5000
 }
