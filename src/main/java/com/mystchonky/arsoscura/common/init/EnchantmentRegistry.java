@@ -13,7 +13,7 @@ public class EnchantmentRegistry {
 
     public static final RegistryEntry<ManaRiptideEnchantment> MANA_RIPTIDE_ENCHANTMENT = REGISTRATE.object("mana_riptide")
             .enchantment(EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new ManaRiptideEnchantment(rarity, slots))
-            .rarity(Enchantment.Rarity.RARE)
+            .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();
 

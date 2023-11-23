@@ -8,6 +8,7 @@ import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
 import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
 import com.mystchonky.arsoscura.common.init.ItemsRegistry;
 import com.mystchonky.arsoscura.common.init.LangRegistry;
+import com.mystchonky.arsoscura.common.init.RecipeRegistry;
 import com.mystchonky.arsoscura.common.network.Networking;
 import com.tterrag.registrate.Registrate;
 import net.minecraft.resources.ResourceLocation;
@@ -59,6 +60,7 @@ public class ArsOscura {
 
         ItemsRegistry.register();
         EnchantmentRegistry.register();
+        RecipeRegistry.register();
         LangRegistry.register();
 
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -81,11 +83,14 @@ public class ArsOscura {
 
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
+
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // do something when the server starts
-        LOGGER.info("HELLO from server starting");
+
+    }
+
+    public static ResourceLocation loc(String object) {
+        return new ResourceLocation(ArsOscura.MODID, object);
     }
 
 }

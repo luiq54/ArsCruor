@@ -2,6 +2,7 @@ package com.mystchonky.arsoscura.datagen;
 
 import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.datagen.models.GlyphItemModelProvider;
+import com.mystchonky.arsoscura.datagen.recipes.EnchantingAppProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,7 +20,7 @@ public class DataProvider {
 
 //        gen.addProvider(event.includeServer(), new ArsProviders.ImbuementProvider(gen));
 //        gen.addProvider(event.includeServer(), new ArsProviders.GlyphProvider(gen));
-//        gen.addProvider(event.includeServer(), new ArsProviders.EnchantingAppProvider(gen));
+        gen.addProvider(event.includeServer(), new EnchantingAppProvider(gen));
 
         gen.addProvider(event.includeServer(), new PatchouliProvider(gen));
 

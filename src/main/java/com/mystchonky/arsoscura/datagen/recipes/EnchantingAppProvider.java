@@ -1,10 +1,16 @@
 package com.mystchonky.arsoscura.datagen.recipes;
 
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
+import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeBuilder;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
+import com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry;
+import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
+import com.mystchonky.arsoscura.common.recipe.EnchantmentUpgradeRecipe;
 import com.mystchonky.arsoscura.datagen.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.nio.file.Path;
 
@@ -14,18 +20,16 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
         super(generatorIn);
     }
 
+    protected static Path getRecipePath(Path pathIn, String str) {
+        return pathIn.resolve("data/" + DataProvider.root + "/recipes/apparatus/" + str + ".json");
+    }
+
     @Override
     public void collectJsons(CachedOutput pOutput) {
-        //example of an apparatus recipe
-        /*
-        recipes.add(builder()
-                .withReagent(ItemsRegistry.SOURCE_GEM)
-                .withPedestalItem(4, Recipes.SOURCE_GEM)
-                .withResult(ItemsRegistry.BUCKET_OF_SOURCE)
-                .withSource(100)
-                .build()
-        );
-         */
+        recipes.add(buildEnchantmentUpgrade(ApparatusRecipeBuilder.builder()
+                        .withResult(ItemsRegistry.SOURCE_GEM)
+                        .withPedestalItem(ItemsRegistry.JUMP_RING).build(),
+                Enchantments.RIPTIDE, EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get(), 5000));
 
         for (EnchantingApparatusRecipe g : recipes) {
             if (g != null) {
@@ -36,12 +40,12 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
 
     }
 
-    protected static Path getRecipePath(Path pathIn, String str) {
-        return pathIn.resolve("data/" + DataProvider.root + "/recipes/" + str + ".json");
+    public EnchantmentUpgradeRecipe buildEnchantmentUpgrade(EnchantingApparatusRecipe recipe, Enchantment baseEnchantment, Enchantment resultEnchantment, int source) {
+        return new EnchantmentUpgradeRecipe(recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
     }
 
     @Override
     public String getName() {
-        return "Example Apparatus";
+        return "Ars Oscura Enchanting Apparatus";
     }
 }
