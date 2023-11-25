@@ -1,6 +1,7 @@
 package com.mystchonky.arsoscura.common.init;
 
 import com.mystchonky.arsoscura.ArsOscura;
+import com.mystchonky.arsoscura.common.enchantments.ManaLoyaltyEnchantment;
 import com.mystchonky.arsoscura.common.enchantments.ManaRiptideEnchantment;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -13,6 +14,12 @@ public class EnchantmentRegistry {
 
     public static final RegistryEntry<ManaRiptideEnchantment> MANA_RIPTIDE_ENCHANTMENT = REGISTRATE.object("mana_riptide")
             .enchantment(EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new ManaRiptideEnchantment(rarity, slots))
+            .rarity(Enchantment.Rarity.VERY_RARE)
+            .addSlots(EquipmentSlot.MAINHAND)
+            .register();
+
+    public static final RegistryEntry<ManaLoyaltyEnchantment> MANA_LOYALTY_ENCHANTMENT = REGISTRATE.object("mana_loyalty")
+            .enchantment(EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new ManaLoyaltyEnchantment(rarity, slots))
             .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();
