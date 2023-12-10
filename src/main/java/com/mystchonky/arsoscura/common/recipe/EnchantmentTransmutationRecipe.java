@@ -27,11 +27,11 @@ import java.util.Map;
 
 import static com.hollingsworth.arsnouveau.setup.registry.RegistryHelper.getRegistryName;
 
-public class EnchantmentUpgradeRecipe extends EnchantingApparatusRecipe {
+public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
     public Enchantment baseEnchantment;
     public Enchantment resultEnchantment;
 
-    public EnchantmentUpgradeRecipe(Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
+    public EnchantmentTransmutationRecipe(Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
         this.baseEnchantment = baseEnchantment;
@@ -103,10 +103,10 @@ public class EnchantmentUpgradeRecipe extends EnchantingApparatusRecipe {
         return jsonobject;
     }
 
-    public static class Serializer implements RecipeSerializer<EnchantmentUpgradeRecipe> {
+    public static class Serializer implements RecipeSerializer<EnchantmentTransmutationRecipe> {
 
         @Override
-        public EnchantmentUpgradeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        public EnchantmentTransmutationRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             Enchantment baseEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "baseEnchantment")));
             Enchantment resultEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "resultEnchantment")));
             int manaCost = GsonHelper.getAsInt(json, "sourceCost", 0);
@@ -125,11 +125,11 @@ public class EnchantmentUpgradeRecipe extends EnchantingApparatusRecipe {
                 }
                 stacks.add(input);
             }
-            return new EnchantmentUpgradeRecipe(reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
+            return new EnchantmentTransmutationRecipe(reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
         }
 
         @Override
-        public @Nullable EnchantmentUpgradeRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf buffer) {
+        public @Nullable EnchantmentTransmutationRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf buffer) {
             int length = buffer.readInt();
             Ingredient reagent = Ingredient.fromNetwork(buffer);
             String baseEnchantID = buffer.readUtf();
@@ -145,11 +145,11 @@ public class EnchantmentUpgradeRecipe extends EnchantingApparatusRecipe {
                     break;
                 }
             }
-            return new EnchantmentUpgradeRecipe(reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
+            return new EnchantmentTransmutationRecipe(reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, EnchantmentUpgradeRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, EnchantmentTransmutationRecipe recipe) {
             buf.writeInt(recipe.pedestalItems.size());
             recipe.reagent.toNetwork(buf);
             buf.writeUtf(getRegistryName(recipe.baseEnchantment).toString());

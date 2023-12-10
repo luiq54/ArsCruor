@@ -1,5 +1,5 @@
 {
-  "type": "ars_oscura:enchantment_upgrade",
+  "type": "ars_oscura:enchantment_transmute",
   "baseEnchantment": "minecraft:riptide",
   "pedestalItems": [
     {
@@ -13,6 +13,6 @@
       "tag": "forge:tools/tridents"
     }
   ],
-  "resultEnchantment": "ars_oscura:mana_riptide",
+  "resultEnchantment": "ars_oscura:torrent",
   "sourceCost": 5000
 }

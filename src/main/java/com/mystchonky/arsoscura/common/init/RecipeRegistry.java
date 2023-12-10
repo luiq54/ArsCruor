@@ -1,7 +1,7 @@
 package com.mystchonky.arsoscura.common.init;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentUpgradeRecipe;
+import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -18,7 +18,7 @@ public class RecipeRegistry {
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, ArsOscura.MODID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsOscura.MODID);
 
-    public static final RecipeTypeSerializerPair<EnchantmentUpgradeRecipe, EnchantmentUpgradeRecipe.Serializer> ENCHANTMENT_UPAGRADE = register("enchantment_upgrade", EnchantmentUpgradeRecipe.Serializer::new);
+    public static final RecipeTypeSerializerPair<EnchantmentTransmutationRecipe, EnchantmentTransmutationRecipe.Serializer> ENCHANTMENT_UPAGRADE = register("enchantment_transmute", EnchantmentTransmutationRecipe.Serializer::new);
 
     private static <I extends Recipe<?>> RegistryObject<RecipeType<I>> registerType(String name) {
         return RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.loc(name)));

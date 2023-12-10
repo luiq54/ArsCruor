@@ -5,7 +5,7 @@ import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeBuilder;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
 import com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry;
 import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentUpgradeRecipe;
+import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
 import com.mystchonky.arsoscura.datagen.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -43,8 +43,8 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
 
     }
 
-    public EnchantmentUpgradeRecipe buildEnchantmentUpgrade(EnchantingApparatusRecipe recipe, Enchantment baseEnchantment, Enchantment resultEnchantment, int source) {
-        return new EnchantmentUpgradeRecipe(recipe.reagent, recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
+    public EnchantmentTransmutationRecipe buildEnchantmentUpgrade(EnchantingApparatusRecipe recipe, Enchantment baseEnchantment, Enchantment resultEnchantment, int source) {
+        return new EnchantmentTransmutationRecipe(recipe.reagent, recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
     }
 
     @Override
