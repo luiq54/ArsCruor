@@ -21,7 +21,6 @@ public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IMan
         return false;
 
     }
-
     @Override
     public int getDefaultManaCost(ItemStack stack) {
         return 25;
@@ -29,5 +28,16 @@ public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IMan
 
     public boolean checkCompatibility(Enchantment enchant) {
         return super.checkCompatibility(enchant) && enchant != Enchantments.LOYALTY && !(enchant instanceof IManaEnchantment);
+    }
+
+    //TODO Configs
+    public static int getCooldownInTicks(int level) {
+        int cooldown = 5;
+        if (level > 1)
+            cooldown = 3;
+        if (level > 2)
+            cooldown = 1;
+
+        return cooldown * 20;
     }
 }

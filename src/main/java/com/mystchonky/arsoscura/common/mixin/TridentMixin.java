@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mystchonky.arsoscura.common.enchantments.FealtyEnchantment;
 import com.mystchonky.arsoscura.common.enchantments.IManaEnchantment;
 import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
 import net.minecraft.world.InteractionHand;
@@ -60,7 +61,7 @@ public abstract class TridentMixin implements IDisplayMana {
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I"))
     public int getRiptideLevel(ItemStack stack, Operation<Integer> original, @Share("riptide") LocalBooleanRef usedManaRiptide) {
         if (EnchantmentHelper.getRiptide(stack) <= 0) {
-            int level = EnchantmentUtil.getManaRiptide(stack);
+            int level = EnchantmentUtil.getTorrent(stack);
             if (level > 0) {
                 usedManaRiptide.set(true);
             }
@@ -82,10 +83,9 @@ public abstract class TridentMixin implements IDisplayMana {
     // Stop removal of Trident from inventory when using Mana Layalty
     @WrapWithCondition(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;removeItem(Lnet/minecraft/world/item/ItemStack;)V"))
     public boolean removeItem(Inventory inventory, ItemStack inputStack, ItemStack methodStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft, @Share("useMana") LocalBooleanRef useMana) {
-        int level = EnchantmentUtil.getManaLoyalty(inputStack);
+        int level = EnchantmentUtil.getFealty(inputStack);
         if (level > 0) {
-            // TODO CONFIGS
-            ((Player) pEntityLiving).getCooldowns().addCooldown(inputStack.getItem(), 100);
+            ((Player) pEntityLiving).getCooldowns().addCooldown(inputStack.getItem(), FealtyEnchantment.getCooldownInTicks(level));
             useMana.set(true);
             return false;
         }
@@ -95,7 +95,7 @@ public abstract class TridentMixin implements IDisplayMana {
     // Tridents with Mana loyalty should not be allowed to be picked up
     @ModifyArg(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"), index = 0)
     public Entity addFreshEntity(Entity entity, @Local(ordinal = 0) ItemStack stack) {
-        if (EnchantmentUtil.getManaLoyalty(stack) > 0) {
+        if (EnchantmentUtil.getFealty(stack) > 0) {
             ((ThrownTrident) entity).pickup = AbstractArrow.Pickup.DISALLOWED;
         }
         return entity;
