@@ -28,9 +28,19 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
         recipes.addAll(TransmutationRecipeBuilder.builder()
                 .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.JUMP_RING)
-                .withPedestalItem(ItemsRegistry.AIR_ESSENCE)
+                .withPedestalItem(ItemsRegistry.BELT_OF_LEVITATION)
                 .withBaseEnchantment(Enchantments.RIPTIDE)
                 .withResultEnchantment(EnchantmentRegistry.TORRENT_ENCHANTMENT.get())
+                .withSourceCost(5000)
+                .buildWithBook());
+
+        recipes.addAll(TransmutationRecipeBuilder.builder()
+                .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
+                .withPedestalItem(ItemsRegistry.SPLASH_LAUNCHER)
+                .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
+                .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
+                .withBaseEnchantment(Enchantments.LOYALTY)
+                .withResultEnchantment(EnchantmentRegistry.FEALTY_ENCHANTMENT.get())
                 .withSourceCost(5000)
                 .buildWithBook());
 
