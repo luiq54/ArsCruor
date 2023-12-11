@@ -15,7 +15,7 @@
   ],
   "reagent": [
     {
-      "tag": "forge:tools/tridents"
+      "item": "minecraft:enchanted_book"
     }
   ],
   "resultEnchantment": "ars_oscura:torrent",

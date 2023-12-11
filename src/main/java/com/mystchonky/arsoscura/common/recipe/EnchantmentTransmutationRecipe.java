@@ -13,11 +13,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,13 +33,26 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
     public Enchantment baseEnchantment;
     public Enchantment resultEnchantment;
 
-    public EnchantmentTransmutationRecipe(Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
+    public EnchantmentTransmutationRecipe() {
+        this.reagent = Ingredient.EMPTY;
+        this.pedestalItems = new ArrayList<>();
+        this.baseEnchantment = Enchantments.BINDING_CURSE;
+        this.resultEnchantment = Enchantments.BINDING_CURSE;
+        this.sourceCost = 0;
+        this.id = new ResourceLocation(ArsOscura.MODID, "empty");
+    }
+
+    public EnchantmentTransmutationRecipe(ResourceLocation id, Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
+        this.id = id;
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
         this.baseEnchantment = baseEnchantment;
         this.resultEnchantment = resultEnchantment;
         this.sourceCost = sourceCost;
-        this.id = new ResourceLocation(ArsOscura.MODID, RegistryHelper.getRegistryName(resultEnchantment).getPath());
+    }
+
+    public EnchantmentTransmutationRecipe copy() {
+        return new EnchantmentTransmutationRecipe(this.id, this.reagent, this.pedestalItems, this.baseEnchantment, this.resultEnchantment, this.sourceCost);
     }
 
     @Override
@@ -71,6 +86,8 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
         int level = enchantments.getOrDefault(baseEnchantment, 0);
         enchantments.remove(baseEnchantment);
         enchantments.put(resultEnchantment, level);
+        if (stack.getItem() == Items.ENCHANTED_BOOK)
+            stack = new ItemStack(Items.ENCHANTED_BOOK);
         EnchantmentHelper.setEnchantments(enchantments, stack);
         return stack;
     }
@@ -125,11 +142,11 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
                 }
                 stacks.add(input);
             }
-            return new EnchantmentTransmutationRecipe(reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
+            return new EnchantmentTransmutationRecipe(recipeId, reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
         }
 
         @Override
-        public @Nullable EnchantmentTransmutationRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf buffer) {
+        public @Nullable EnchantmentTransmutationRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             int length = buffer.readInt();
             Ingredient reagent = Ingredient.fromNetwork(buffer);
             String baseEnchantID = buffer.readUtf();
@@ -145,7 +162,7 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
                     break;
                 }
             }
-            return new EnchantmentTransmutationRecipe(reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
+            return new EnchantmentTransmutationRecipe(recipeId, reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
         }
 
         @Override

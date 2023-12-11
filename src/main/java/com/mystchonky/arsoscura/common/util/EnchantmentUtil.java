@@ -21,10 +21,10 @@ public class EnchantmentUtil {
     }
 
     public static int getManaRiptide(ItemStack pStack) {
-        return EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get(), pStack);
+        return EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.TORRENT_ENCHANTMENT.get(), pStack);
     }
 
     public static int getManaLoyalty(ItemStack pStack) {
-        return EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.MANA_LOYALTY_ENCHANTMENT.get(), pStack);
+        return EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.FEALTY_ENCHANTMENT.get(), pStack);
     }
 }

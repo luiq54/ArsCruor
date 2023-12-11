@@ -18,12 +18,6 @@ public class TorrentEnchantment extends TridentRiptideEnchantment implements IMa
     }
 
     @Override
-    public boolean isAllowedOnBooks() {
-        return false;
-
-    }
-
-    @Override
     public int getDefaultManaCost(ItemStack stack) {
         return 25;
     }

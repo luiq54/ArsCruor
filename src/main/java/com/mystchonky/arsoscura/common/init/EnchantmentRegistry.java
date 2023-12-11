@@ -12,14 +12,14 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 public class EnchantmentRegistry {
     private static final Registrate REGISTRATE = ArsOscura.registrate();
 
-    public static final RegistryEntry<TorrentEnchantment> MANA_RIPTIDE_ENCHANTMENT = REGISTRATE.object("torrent")
-            .enchantment(EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new TorrentEnchantment(rarity, slots))
+    public static final RegistryEntry<TorrentEnchantment> TORRENT_ENCHANTMENT = REGISTRATE
+            .enchantment("torrent", EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new TorrentEnchantment(rarity, slots))
             .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();
 
-    public static final RegistryEntry<FealtyEnchantment> MANA_LOYALTY_ENCHANTMENT = REGISTRATE.object("fealty")
-            .enchantment(EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new FealtyEnchantment(rarity, slots))
+    public static final RegistryEntry<FealtyEnchantment> FEALTY_ENCHANTMENT = REGISTRATE
+            .enchantment("fealty", EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new FealtyEnchantment(rarity, slots))
             .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();

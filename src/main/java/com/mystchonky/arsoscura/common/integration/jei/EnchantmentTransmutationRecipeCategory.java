@@ -23,6 +23,7 @@ public class EnchantmentTransmutationRecipeCategory extends MultiInputCategory<E
 
     public EnchantmentTransmutationRecipeCategory(IGuiHelper helper) {
         super(helper, recipe -> {
+
             ItemStack output = recipe.reagent.getItems()[0].copy();
             output.enchant(recipe.resultEnchantment, 1);
 

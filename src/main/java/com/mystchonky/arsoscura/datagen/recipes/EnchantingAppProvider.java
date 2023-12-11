@@ -1,16 +1,13 @@
 package com.mystchonky.arsoscura.datagen.recipes;
 
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
-import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeBuilder;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
 import com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry;
 import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
 import com.mystchonky.arsoscura.datagen.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.Tags;
 
@@ -28,11 +25,14 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
 
     @Override
     public void collectJsons(CachedOutput pOutput) {
-        recipes.add(buildEnchantmentUpgrade(ApparatusRecipeBuilder.builder()
-                        .withReagent(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
-                        .withResult(ItemsRegistry.SOURCE_GEM)
-                        .withPedestalItem(ItemsRegistry.JUMP_RING).build(),
-                Enchantments.RIPTIDE, EnchantmentRegistry.MANA_RIPTIDE_ENCHANTMENT.get(), 5000));
+        recipes.addAll(TransmutationRecipeBuilder.builder()
+                .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
+                .withPedestalItem(ItemsRegistry.JUMP_RING)
+                .withPedestalItem(ItemsRegistry.AIR_ESSENCE)
+                .withBaseEnchantment(Enchantments.RIPTIDE)
+                .withResultEnchantment(EnchantmentRegistry.TORRENT_ENCHANTMENT.get())
+                .withSourceCost(5000)
+                .buildWithBook());
 
         for (EnchantingApparatusRecipe g : recipes) {
             if (g != null) {
@@ -41,10 +41,6 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
             }
         }
 
-    }
-
-    public EnchantmentTransmutationRecipe buildEnchantmentUpgrade(EnchantingApparatusRecipe recipe, Enchantment baseEnchantment, Enchantment resultEnchantment, int source) {
-        return new EnchantmentTransmutationRecipe(recipe.reagent, recipe.pedestalItems, baseEnchantment, resultEnchantment, source);
     }
 
     @Override
