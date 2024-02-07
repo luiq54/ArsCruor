@@ -5,6 +5,7 @@ import com.hollingsworth.arsnouveau.setup.proxy.IProxy;
 import com.hollingsworth.arsnouveau.setup.proxy.ServerProxy;
 import com.mystchonky.arsoscura.common.config.BaseConfig;
 import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
+import com.mystchonky.arsoscura.common.init.EntityRegistry;
 import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
 import com.mystchonky.arsoscura.common.init.ItemsRegistry;
 import com.mystchonky.arsoscura.common.init.LangRegistry;
@@ -59,6 +60,7 @@ public class ArsOscura {
         IntegrationRegistry.init();
 
         ItemsRegistry.register();
+        EntityRegistry.register();
         EnchantmentRegistry.register();
         RecipeRegistry.register();
         LangRegistry.register();
