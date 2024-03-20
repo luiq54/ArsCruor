@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = ArsOscura.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventHandler {
-
     @SubscribeEvent
     public static void registerEntityAttributes(final EntityAttributeCreationEvent event) {
         event.put(EntityRegistrar.HORSIE.get(), AbstractHorse.createBaseHorseAttributes().build());

@@ -1,5 +1,6 @@
 package com.mystchonky.arsoscura.common.enchantments;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ public class TorrentEnchantment extends TridentRiptideEnchantment implements IAr
 
     @Override
     public int getDefaultManaCost(ItemStack stack) {
-        return 25;
+        return 100;
     }
 
     @Override
@@ -30,5 +31,10 @@ public class TorrentEnchantment extends TridentRiptideEnchantment implements IAr
 
     public boolean checkCompatibility(@NotNull Enchantment enchant) {
         return super.checkCompatibility(enchant) && enchant != Enchantments.RIPTIDE && !(enchant instanceof IArcaneEnchantment);
+    }
+
+    @Override
+    public @NotNull Component getFullname(int level) {
+        return getNameWithStyle(this, level);
     }
 }

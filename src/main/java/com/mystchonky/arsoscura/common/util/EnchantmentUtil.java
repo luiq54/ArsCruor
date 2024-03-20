@@ -14,7 +14,7 @@ public class EnchantmentUtil {
         return enchants.keySet().stream().anyMatch(it -> it instanceof IArcaneEnchantment);
     }
 
-    public static Optional<IArcaneEnchantment> getManaEnchantment(ItemStack stack) {
+    public static Optional<IArcaneEnchantment> getArcaneEnchantment(ItemStack stack) {
         Map<Enchantment, Integer> enchants = stack.getAllEnchantments();
         return enchants.keySet().stream().filter(it -> it instanceof IArcaneEnchantment).findFirst().map(IArcaneEnchantment.class::cast);
     }

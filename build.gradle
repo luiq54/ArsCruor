@@ -108,14 +108,10 @@ repositories {
         content {
             includeGroup "curse.maven"
         }
-
     }
     maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
-//        content {
-//            includeGroup "maven.modrinth"
-//        }
     }
     mavenCentral()
     mavenLocal()
@@ -124,7 +120,7 @@ repositories {
 jarJar.enable()
 
 dependencies {
-    minecraft "net.neoforged:forge:${mc_version}-${forge_version}"
+    minecraft "net.neoforged:forge:${mc_version}-${neo_version}"
 
     implementation fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-${mc_version}:${ars_version}")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${gecko_version}")
@@ -135,7 +131,7 @@ dependencies {
 
     // Registrate
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
-    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version}]")
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version},)")
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
@@ -148,7 +144,6 @@ dependencies {
     implementation /*compileOnly*/ fg.deobf("com.github.glitchfiend:TerraBlender-forge:${mc_version}-${terrablender}")
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-
 }
 
 
@@ -176,13 +171,6 @@ reobf {
     jarJar {}
 }
 
-
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing:
-// tasks.named('publish').configure {
-//     dependsOn 'reobfJar'
-// }
-
-// Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
         register('mavenJava', MavenPublication) {

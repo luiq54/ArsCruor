@@ -1,5 +1,6 @@
 package com.mystchonky.arsoscura.common.enchantments;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -40,5 +41,10 @@ public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IArc
             cooldown = 1;
 
         return cooldown * 20;
+    }
+
+    @Override
+    public @NotNull Component getFullname(int level) {
+        return getNameWithStyle(this, level);
     }
 }
