@@ -1,8 +1,8 @@
-package com.mystchonky.arsoscura.datagen.recipes;
+package com.mystchonky.arsoscura.data.recipes;
 
 import com.hollingsworth.arsnouveau.setup.registry.RegistryHelper;
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
+import com.mystchonky.arsoscura.common.recipe.ArcaneFusionRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -14,85 +14,85 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
-public class TransmutationRecipeBuilder {
+public class ArcaneFusionRecipeBuilder {
 
-    EnchantmentTransmutationRecipe recipe;
+    ArcaneFusionRecipe recipe;
 
-    public TransmutationRecipeBuilder() {
-        this.recipe = new EnchantmentTransmutationRecipe();
+    public ArcaneFusionRecipeBuilder() {
+        this.recipe = new ArcaneFusionRecipe();
     }
 
-    public static TransmutationRecipeBuilder builder() {
-        return new TransmutationRecipeBuilder();
+    public static ArcaneFusionRecipeBuilder builder() {
+        return new ArcaneFusionRecipeBuilder();
     }
 
-    public TransmutationRecipeBuilder withItem(Ingredient item) {
+    public ArcaneFusionRecipeBuilder withItem(Ingredient item) {
         this.recipe.reagent = item;
         return this;
     }
 
-    public TransmutationRecipeBuilder withBaseEnchantment(Enchantment enchantment) {
+    public ArcaneFusionRecipeBuilder withBaseEnchantment(Enchantment enchantment) {
         this.recipe.baseEnchantment = enchantment;
         return this;
     }
 
-    public TransmutationRecipeBuilder withResultEnchantment(Enchantment enchantment) {
+    public ArcaneFusionRecipeBuilder withResultEnchantment(Enchantment enchantment) {
         this.recipe.resultEnchantment = enchantment;
         return this;
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(Ingredient i) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(Ingredient i) {
         this.recipe.pedestalItems.add(i);
         return this;
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(RegistryObject<? extends ItemLike> i) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(RegistryObject<? extends ItemLike> i) {
         return withPedestalItem(i.get());
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(ItemLike i) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(ItemLike i) {
         return this.withPedestalItem(Ingredient.of(i));
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(int count, RegistryObject<? extends ItemLike> i) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(int count, RegistryObject<? extends ItemLike> i) {
         return withPedestalItem(count, i.get());
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(int count, ItemLike item) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(int count, ItemLike item) {
         for (int i = 0; i < count; i++)
             this.withPedestalItem(item);
         return this;
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(int count, Ingredient ingred) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(int count, Ingredient ingred) {
         for (int i = 0; i < count; i++)
             this.withPedestalItem(ingred);
         return this;
     }
 
-    public TransmutationRecipeBuilder withPedestalItem(int count, TagKey<Item> ingred) {
+    public ArcaneFusionRecipeBuilder withPedestalItem(int count, TagKey<Item> ingred) {
         return this.withPedestalItem(count, Ingredient.of(ingred));
     }
 
-    public TransmutationRecipeBuilder withSourceCost(int cost) {
+    public ArcaneFusionRecipeBuilder withSourceCost(int cost) {
         this.recipe.sourceCost = cost;
         return this;
     }
 
-    public TransmutationRecipeBuilder withId(ResourceLocation id) {
+    public ArcaneFusionRecipeBuilder withId(ResourceLocation id) {
         this.recipe.id = id;
         return this;
     }
 
-    public EnchantmentTransmutationRecipe build() {
+    public ArcaneFusionRecipe build() {
         if (recipe.id.getPath().equals("empty"))
             recipe.id = new ResourceLocation(ArsOscura.MODID, RegistryHelper.getRegistryName(recipe.resultEnchantment).getPath());
         return recipe;
     }
 
-    public List<EnchantmentTransmutationRecipe> buildWithBook() {
-        EnchantmentTransmutationRecipe recipe = this.build();
-        EnchantmentTransmutationRecipe copy = recipe.copy();
+    public List<ArcaneFusionRecipe> buildWithBook() {
+        ArcaneFusionRecipe recipe = this.build();
+        ArcaneFusionRecipe copy = recipe.copy();
         copy.reagent = Ingredient.of(Items.ENCHANTED_BOOK);
         copy.id = new ResourceLocation(ArsOscura.MODID, RegistryHelper.getRegistryName(recipe.resultEnchantment).getPath() + "_book");
         return List.of(recipe, copy);

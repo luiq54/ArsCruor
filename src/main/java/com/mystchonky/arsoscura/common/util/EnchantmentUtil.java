@@ -1,7 +1,7 @@
 package com.mystchonky.arsoscura.common.util;
 
-import com.mystchonky.arsoscura.common.enchantments.IManaEnchantment;
-import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
+import com.mystchonky.arsoscura.common.enchantments.IArcaneEnchantment;
+import com.mystchonky.arsoscura.common.registrar.EnchantmentRegistrar;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -9,21 +9,21 @@ import java.util.Map;
 import java.util.Optional;
 
 public class EnchantmentUtil {
-    public static boolean isManaTool(ItemStack stack) {
+    public static boolean hasArcaneEnchantment(ItemStack stack) {
         Map<Enchantment, Integer> enchants = stack.getAllEnchantments();
-        return enchants.keySet().stream().anyMatch(it -> it instanceof IManaEnchantment);
+        return enchants.keySet().stream().anyMatch(it -> it instanceof IArcaneEnchantment);
     }
 
-    public static Optional<IManaEnchantment> getManaEnchantment(ItemStack stack) {
+    public static Optional<IArcaneEnchantment> getManaEnchantment(ItemStack stack) {
         Map<Enchantment, Integer> enchants = stack.getAllEnchantments();
-        return enchants.keySet().stream().filter(it -> it instanceof IManaEnchantment).findFirst().map(IManaEnchantment.class::cast);
+        return enchants.keySet().stream().filter(it -> it instanceof IArcaneEnchantment).findFirst().map(IArcaneEnchantment.class::cast);
     }
 
-    public static int getTorrent(ItemStack pStack) {
-        return pStack.getEnchantmentLevel(EnchantmentRegistry.TORRENT_ENCHANTMENT.get());
+    public static int getTorrent(ItemStack stack) {
+        return stack.getEnchantmentLevel(EnchantmentRegistrar.TORRENT_ENCHANTMENT.get());
     }
 
-    public static int getFealty(ItemStack pStack) {
-        return pStack.getEnchantmentLevel(EnchantmentRegistry.FEALTY_ENCHANTMENT.get());
+    public static int getFealty(ItemStack stack) {
+        return stack.getEnchantmentLevel(EnchantmentRegistrar.FEALTY_ENCHANTMENT.get());
     }
 }

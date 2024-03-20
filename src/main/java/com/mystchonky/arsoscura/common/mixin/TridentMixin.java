@@ -9,7 +9,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mystchonky.arsoscura.common.enchantments.FealtyEnchantment;
-import com.mystchonky.arsoscura.common.enchantments.IManaEnchantment;
+import com.mystchonky.arsoscura.common.enchantments.IArcaneEnchantment;
 import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -37,14 +37,14 @@ public abstract class TridentMixin implements IDisplayMana {
 
     @Override
     public boolean shouldDisplay(ItemStack stack) {
-        return EnchantmentUtil.isManaTool(stack);
+        return EnchantmentUtil.hasArcaneEnchantment(stack);
     }
 
     // Allow cast only if player has sufficient Mana
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startUsingItem(Lnet/minecraft/world/InteractionHand;)V"), cancellable = true)
     public void checkEnchantAndMana(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         ItemStack stack = player.getItemInHand(hand);
-        Optional<IManaEnchantment> manaEnchant = EnchantmentUtil.getManaEnchantment(stack);
+        Optional<IArcaneEnchantment> manaEnchant = EnchantmentUtil.getManaEnchantment(stack);
         if (manaEnchant.isPresent()) {
             int manaCost = manaEnchant.get().getCastingCost(player, stack);
             CapabilityRegistry.getMana(player).ifPresent(manaCap -> {
@@ -57,7 +57,7 @@ public abstract class TridentMixin implements IDisplayMana {
 
     }
 
-    // Allow ManaRiptide as an alternative to Vanilla Riptide
+    // Allow Torrent as an alternative to Vanilla Riptide
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I"))
     public int getRiptideLevel(ItemStack stack, Operation<Integer> original, @Share("riptide") LocalBooleanRef usedManaRiptide) {
         if (EnchantmentHelper.getRiptide(stack) <= 0) {

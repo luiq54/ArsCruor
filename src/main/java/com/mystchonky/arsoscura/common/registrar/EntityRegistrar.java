@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.common.entity.EnchantedHorse;
@@ -6,8 +6,8 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import net.minecraft.world.entity.MobCategory;
 
-public class EntityRegistry {
-    private static Registrate REGISTRATE = ArsOscura.registrate();
+public class EntityRegistrar {
+    private static final Registrate REGISTRATE = ArsOscura.registrate();
 
     public static EntityEntry<EnchantedHorse> HORSIE = REGISTRATE
             .object("horsie")

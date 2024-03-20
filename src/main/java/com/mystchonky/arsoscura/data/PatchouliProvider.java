@@ -1,7 +1,7 @@
-package com.mystchonky.arsoscura.datagen;
+package com.mystchonky.arsoscura.data;
 
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
-import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
+import com.mystchonky.arsoscura.common.registrar.IntegrationRegistrar;
 import net.minecraft.data.DataGenerator;
 
 public class PatchouliProvider extends com.hollingsworth.arsnouveau.common.datagen.PatchouliProvider {
@@ -12,7 +12,7 @@ public class PatchouliProvider extends com.hollingsworth.arsnouveau.common.datag
 
     @Override
     public void addEntries() {
-        for (AbstractSpellPart spell : IntegrationRegistry.registeredSpells) {
+        for (AbstractSpellPart spell : IntegrationRegistrar.registeredSpells) {
             addGlyphPage(spell);
         }
     }

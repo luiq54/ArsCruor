@@ -1,10 +1,10 @@
-package com.mystchonky.arsoscura.datagen.recipes;
+package com.mystchonky.arsoscura.data.recipes;
 
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
 import com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry;
-import com.mystchonky.arsoscura.common.init.EnchantmentRegistry;
-import com.mystchonky.arsoscura.datagen.DataProvider;
+import com.mystchonky.arsoscura.common.registrar.EnchantmentRegistrar;
+import com.mystchonky.arsoscura.data.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -25,22 +25,22 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
 
     @Override
     public void collectJsons(CachedOutput pOutput) {
-        recipes.addAll(TransmutationRecipeBuilder.builder()
+        recipes.addAll(ArcaneFusionRecipeBuilder.builder()
                 .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.JUMP_RING)
                 .withPedestalItem(ItemsRegistry.BELT_OF_LEVITATION)
                 .withBaseEnchantment(Enchantments.RIPTIDE)
-                .withResultEnchantment(EnchantmentRegistry.TORRENT_ENCHANTMENT.get())
+                .withResultEnchantment(EnchantmentRegistrar.TORRENT_ENCHANTMENT.get())
                 .withSourceCost(5000)
                 .buildWithBook());
 
-        recipes.addAll(TransmutationRecipeBuilder.builder()
+        recipes.addAll(ArcaneFusionRecipeBuilder.builder()
                 .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.SPLASH_LAUNCHER)
                 .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
                 .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
                 .withBaseEnchantment(Enchantments.LOYALTY)
-                .withResultEnchantment(EnchantmentRegistry.FEALTY_ENCHANTMENT.get())
+                .withResultEnchantment(EnchantmentRegistrar.FEALTY_ENCHANTMENT.get())
                 .withSourceCost(5000)
                 .buildWithBook());
 

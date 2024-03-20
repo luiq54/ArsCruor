@@ -1,7 +1,7 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
+import com.mystchonky.arsoscura.common.recipe.ArcaneFusionRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -13,19 +13,19 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
-public class RecipeRegistry {
+public class RecipeRegistrar {
 
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, ArsOscura.MODID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsOscura.MODID);
 
-    public static final RecipeTypeSerializerPair<EnchantmentTransmutationRecipe, EnchantmentTransmutationRecipe.Serializer> ENCHANTMENT_UPAGRADE = register("enchantment_transmute", EnchantmentTransmutationRecipe.Serializer::new);
+    public static final RecipeTypeSerializerPair<ArcaneFusionRecipe, ArcaneFusionRecipe.Serializer> ENCHANTMENT_UPAGRADE = register("enchantment_transmute", ArcaneFusionRecipe.Serializer::new);
 
     private static <I extends Recipe<?>> RegistryObject<RecipeType<I>> registerType(String name) {
-        return RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.loc(name)));
+        return RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.prefix(name)));
     }
 
     private static <R extends Recipe<?>, S extends RecipeSerializer<? extends R>> RecipeTypeSerializerPair<R, S> register(String name, Supplier<S> serializerFactory) {
-        RegistryObject<RecipeType<R>> type = RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.loc(name)));
+        RegistryObject<RecipeType<R>> type = RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.prefix(name)));
         RegistryObject<S> serializer = RECIPE_SERIALIZERS.register(name, serializerFactory);
         return new RecipeTypeSerializerPair<>(type, serializer);
     }

@@ -5,10 +5,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.TridentLoyaltyEnchantment;
+import org.jetbrains.annotations.NotNull;
 
-public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IManaEnchantment {
-    public FealtyEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pApplicableSlots);
+public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IArcaneEnchantment {
+    public FealtyEnchantment(Rarity rarity, EquipmentSlot... equipmentSlots) {
+        super(rarity, equipmentSlots);
     }
 
     @Override
@@ -26,8 +27,8 @@ public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IMan
         return 25;
     }
 
-    public boolean checkCompatibility(Enchantment enchant) {
-        return super.checkCompatibility(enchant) && enchant != Enchantments.LOYALTY && !(enchant instanceof IManaEnchantment);
+    public boolean checkCompatibility(@NotNull Enchantment enchant) {
+        return super.checkCompatibility(enchant) && enchant != Enchantments.LOYALTY && !(enchant instanceof IArcaneEnchantment);
     }
 
     //TODO Configs

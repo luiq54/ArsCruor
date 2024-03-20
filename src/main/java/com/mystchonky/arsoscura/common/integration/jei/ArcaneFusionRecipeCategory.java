@@ -2,8 +2,8 @@ package com.mystchonky.arsoscura.common.integration.jei;
 
 import com.hollingsworth.arsnouveau.client.jei.MultiInputCategory;
 import com.hollingsworth.arsnouveau.setup.registry.BlockRegistry;
-import com.mystchonky.arsoscura.common.init.LangRegistry;
-import com.mystchonky.arsoscura.common.recipe.EnchantmentTransmutationRecipe;
+import com.mystchonky.arsoscura.common.recipe.ArcaneFusionRecipe;
+import com.mystchonky.arsoscura.common.registrar.LangRegistrar;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -15,15 +15,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
-public class EnchantmentTransmutationRecipeCategory extends MultiInputCategory<EnchantmentTransmutationRecipe> {
+public class ArcaneFusionRecipeCategory extends MultiInputCategory<ArcaneFusionRecipe> {
 
     public IDrawable background;
     public IDrawable icon;
 
-    public EnchantmentTransmutationRecipeCategory(IGuiHelper helper) {
+    public ArcaneFusionRecipeCategory(IGuiHelper helper) {
         super(helper, recipe -> {
-
             ItemStack output = recipe.reagent.getItems()[0].copy();
             output.enchant(recipe.resultEnchantment, 1);
 
@@ -37,27 +37,27 @@ public class EnchantmentTransmutationRecipeCategory extends MultiInputCategory<E
     }
 
     @Override
-    public RecipeType<EnchantmentTransmutationRecipe> getRecipeType() {
-        return ArsOscuraJEIPlugin.TRANSMUTATION_RECIPE_TYPE;
+    public @NotNull RecipeType<ArcaneFusionRecipe> getRecipeType() {
+        return ArsOscuraJEIPlugin.ARCANE_FUSION_RECIPE_TYPE;
     }
 
     @Override
-    public Component getTitle() {
-        return LangRegistry.ENCHANTMENT_TRANSMUTATION;
+    public @NotNull Component getTitle() {
+        return LangRegistrar.ENCHANTMENT_TRANSMUTATION;
     }
 
     @Override
-    public IDrawable getBackground() {
+    public @NotNull IDrawable getBackground() {
         return background;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public @NotNull IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void draw(EnchantmentTransmutationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(ArcaneFusionRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         Font renderer = Minecraft.getInstance().font;
         if (recipe.consumesSource())
             guiGraphics.drawString(renderer, Component.translatable("ars_nouveau.source", recipe.sourceCost), 0, 100, 10, false);

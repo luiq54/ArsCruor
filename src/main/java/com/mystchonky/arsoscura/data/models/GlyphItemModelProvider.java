@@ -1,7 +1,7 @@
-package com.mystchonky.arsoscura.datagen.models;
+package com.mystchonky.arsoscura.data.models;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.init.IntegrationRegistry;
+import com.mystchonky.arsoscura.common.registrar.IntegrationRegistrar;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -13,6 +13,6 @@ public class GlyphItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        IntegrationRegistry.registeredSpells.forEach(spell -> basicItem(spell.getRegistryName()));
+        IntegrationRegistrar.registeredSpells.forEach(spell -> basicItem(spell.getRegistryName()));
     }
 }

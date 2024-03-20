@@ -7,7 +7,7 @@ import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatus
 import com.hollingsworth.arsnouveau.common.block.tile.EnchantingApparatusTile;
 import com.hollingsworth.arsnouveau.setup.registry.RegistryHelper;
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.init.RecipeRegistry;
+import com.mystchonky.arsoscura.common.registrar.RecipeRegistrar;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -29,11 +29,11 @@ import java.util.Map;
 
 import static com.hollingsworth.arsnouveau.setup.registry.RegistryHelper.getRegistryName;
 
-public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
+public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
     public Enchantment baseEnchantment;
     public Enchantment resultEnchantment;
 
-    public EnchantmentTransmutationRecipe() {
+    public ArcaneFusionRecipe() {
         this.reagent = Ingredient.EMPTY;
         this.pedestalItems = new ArrayList<>();
         this.baseEnchantment = Enchantments.BINDING_CURSE;
@@ -42,7 +42,7 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
         this.id = new ResourceLocation(ArsOscura.MODID, "empty");
     }
 
-    public EnchantmentTransmutationRecipe(ResourceLocation id, Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
+    public ArcaneFusionRecipe(ResourceLocation id, Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
         this.id = id;
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
@@ -51,8 +51,8 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
         this.sourceCost = sourceCost;
     }
 
-    public EnchantmentTransmutationRecipe copy() {
-        return new EnchantmentTransmutationRecipe(this.id, this.reagent, this.pedestalItems, this.baseEnchantment, this.resultEnchantment, this.sourceCost);
+    public ArcaneFusionRecipe copy() {
+        return new ArcaneFusionRecipe(this.id, this.reagent, this.pedestalItems, this.baseEnchantment, this.resultEnchantment, this.sourceCost);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeRegistry.ENCHANTMENT_UPAGRADE.type().get();
+        return RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().get();
     }
 
     @Override
@@ -94,13 +94,13 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeRegistry.ENCHANTMENT_UPAGRADE.serializer().get();
+        return RecipeRegistrar.ENCHANTMENT_UPAGRADE.serializer().get();
     }
 
     @Override
     public JsonElement asRecipe() {
         JsonObject jsonobject = new JsonObject();
-        jsonobject.addProperty("type", RecipeRegistry.ENCHANTMENT_UPAGRADE.type().getId().toString());
+        jsonobject.addProperty("type", RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().getId().toString());
         jsonobject.addProperty("baseEnchantment", RegistryHelper.getRegistryName(baseEnchantment).toString());
         jsonobject.addProperty("resultEnchantment", RegistryHelper.getRegistryName(resultEnchantment).toString());
         jsonobject.addProperty("sourceCost", getSourceCost());
@@ -120,10 +120,10 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
         return jsonobject;
     }
 
-    public static class Serializer implements RecipeSerializer<EnchantmentTransmutationRecipe> {
+    public static class Serializer implements RecipeSerializer<ArcaneFusionRecipe> {
 
         @Override
-        public EnchantmentTransmutationRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        public ArcaneFusionRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             Enchantment baseEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "baseEnchantment")));
             Enchantment resultEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "resultEnchantment")));
             int manaCost = GsonHelper.getAsInt(json, "sourceCost", 0);
@@ -142,11 +142,11 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
                 }
                 stacks.add(input);
             }
-            return new EnchantmentTransmutationRecipe(recipeId, reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
+            return new ArcaneFusionRecipe(recipeId, reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
         }
 
         @Override
-        public @Nullable EnchantmentTransmutationRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+        public @Nullable ArcaneFusionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             int length = buffer.readInt();
             Ingredient reagent = Ingredient.fromNetwork(buffer);
             String baseEnchantID = buffer.readUtf();
@@ -162,11 +162,11 @@ public class EnchantmentTransmutationRecipe extends EnchantingApparatusRecipe {
                     break;
                 }
             }
-            return new EnchantmentTransmutationRecipe(recipeId, reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
+            return new ArcaneFusionRecipe(recipeId, reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, EnchantmentTransmutationRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, ArcaneFusionRecipe recipe) {
             buf.writeInt(recipe.pedestalItems.size());
             recipe.reagent.toNetwork(buf);
             buf.writeUtf(getRegistryName(recipe.baseEnchantment).toString());

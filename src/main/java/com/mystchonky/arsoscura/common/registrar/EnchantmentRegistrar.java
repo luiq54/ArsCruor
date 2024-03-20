@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.common.enchantments.FealtyEnchantment;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class EnchantmentRegistry {
+public class EnchantmentRegistrar {
     private static final Registrate REGISTRATE = ArsOscura.registrate();
 
     public static final RegistryEntry<TorrentEnchantment> TORRENT_ENCHANTMENT = REGISTRATE

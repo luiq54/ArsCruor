@@ -1,8 +1,8 @@
-package com.mystchonky.arsoscura.datagen.recipes;
+package com.mystchonky.arsoscura.data.recipes;
 
 import com.hollingsworth.arsnouveau.common.crafting.recipes.ImbuementRecipe;
 import com.hollingsworth.arsnouveau.common.datagen.ImbuementRecipeProvider;
-import com.mystchonky.arsoscura.datagen.DataProvider;
+import com.mystchonky.arsoscura.data.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 

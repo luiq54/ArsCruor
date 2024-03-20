@@ -3,7 +3,7 @@ package com.mystchonky.arsoscura.common.enchantments;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public interface IManaEnchantment {
+public interface IArcaneEnchantment {
     int getDefaultManaCost(ItemStack stack);
 
     // TODO: add config wrapper

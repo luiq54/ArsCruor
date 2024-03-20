@@ -1,7 +1,7 @@
 package com.mystchonky.arsoscura.client.events;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.init.EntityRegistry;
+import com.mystchonky.arsoscura.common.registrar.EntityRegistrar;
 import net.minecraft.client.renderer.entity.HorseRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -14,6 +14,6 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(EntityRegistry.HORSIE.get(), HorseRenderer::new);
+        event.registerEntityRenderer(EntityRegistrar.HORSIE.get(), HorseRenderer::new);
     }
 }

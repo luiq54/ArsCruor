@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.registrar;
 
 import com.hollingsworth.arsnouveau.api.ArsNouveauAPI;
 import com.hollingsworth.arsnouveau.api.familiar.AbstractFamiliarHolder;
@@ -7,7 +7,7 @@ import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntegrationRegistry {
+public class IntegrationRegistrar {
 
     public static ArsNouveauAPI ArsNouveau = ArsNouveauAPI.getInstance();
 
@@ -18,7 +18,7 @@ public class IntegrationRegistry {
     }
 
     public static void postInit() {
-        ArsNouveau.getEnchantingRecipeTypes().add(RecipeRegistry.ENCHANTMENT_UPAGRADE.type().get());
+        ArsNouveau.getEnchantingRecipeTypes().add(RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().get());
     }
 
 }

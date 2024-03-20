@@ -1,8 +1,8 @@
-package com.mystchonky.arsoscura.datagen;
+package com.mystchonky.arsoscura.data;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.datagen.models.GlyphItemModelProvider;
-import com.mystchonky.arsoscura.datagen.recipes.EnchantingAppProvider;
+import com.mystchonky.arsoscura.data.models.GlyphItemModelProvider;
+import com.mystchonky.arsoscura.data.recipes.EnchantingAppProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,9 +10,8 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = ArsOscura.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataProvider {
-    public static String root = ArsOscura.MODID;
+    public static final String root = ArsOscura.MODID;
 
-    //use runData configuration to generate stuff, event.includeServer() for data, event.includeClient() for assets
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         net.minecraft.data.DataGenerator gen = event.getGenerator();

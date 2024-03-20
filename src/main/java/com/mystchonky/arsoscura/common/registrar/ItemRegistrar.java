@@ -1,9 +1,9 @@
-package com.mystchonky.arsoscura.common.init;
+package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
 import com.tterrag.registrate.Registrate;
 
-public class ItemsRegistry {
+public class ItemRegistrar {
     private static final Registrate REGISTRATE = ArsOscura.registrate();
 
 //    public static final RegistryEntry<CreativeModeTab> ARS_OSCURA_TAB = REGISTRATE.defaultCreativeTab("ars_oscura",
