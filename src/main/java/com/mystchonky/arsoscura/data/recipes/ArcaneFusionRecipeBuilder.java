@@ -6,13 +6,10 @@ import com.mystchonky.arsoscura.common.recipe.ArcaneFusionRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.List;
 
 public class ArcaneFusionRecipeBuilder {
 
@@ -90,11 +87,4 @@ public class ArcaneFusionRecipeBuilder {
         return recipe;
     }
 
-    public List<ArcaneFusionRecipe> buildWithBook() {
-        ArcaneFusionRecipe recipe = this.build();
-        ArcaneFusionRecipe copy = recipe.copy();
-        copy.reagent = Ingredient.of(Items.ENCHANTED_BOOK);
-        copy.id = new ResourceLocation(ArsOscura.MODID, RegistryHelper.getRegistryName(recipe.resultEnchantment).getPath() + "_book");
-        return List.of(recipe, copy);
-    }
 }

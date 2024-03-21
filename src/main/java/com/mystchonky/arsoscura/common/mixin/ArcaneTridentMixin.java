@@ -29,7 +29,6 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
         return EnchantmentManager.hasArcaneEnchantment(stack);
     }
 
-
     // Allow Torrent as an alternative to Vanilla Riptide
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I"))
     public int getRiptideLevel(ItemStack stack, Operation<Integer> original) {

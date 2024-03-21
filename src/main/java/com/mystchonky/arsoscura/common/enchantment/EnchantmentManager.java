@@ -25,4 +25,8 @@ public class EnchantmentManager {
     public static int getZealous(ItemStack stack) {
         return stack.getEnchantmentLevel(EnchantmentRegistrar.ZEALOUS_ENCHANTMENT.get());
     }
+
+    public static int getSunder(ItemStack stack) {
+        return stack.getEnchantmentLevel(EnchantmentRegistrar.SUNDER_ENCHANTMENT.get());
+    }
 }

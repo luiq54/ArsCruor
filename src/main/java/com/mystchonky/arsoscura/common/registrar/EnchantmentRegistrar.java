@@ -1,6 +1,7 @@
 package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
+import com.mystchonky.arsoscura.common.enchantment.SunderEnchantment;
 import com.mystchonky.arsoscura.common.enchantment.TorrentEnchantment;
 import com.mystchonky.arsoscura.common.enchantment.ZealousEnchantment;
 import com.tterrag.registrate.Registrate;
@@ -20,6 +21,12 @@ public class EnchantmentRegistrar {
 
     public static final RegistryEntry<ZealousEnchantment> ZEALOUS_ENCHANTMENT = REGISTRATE
             .enchantment("zealous", EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new ZealousEnchantment(rarity, slots))
+            .rarity(Enchantment.Rarity.VERY_RARE)
+            .addSlots(EquipmentSlot.MAINHAND)
+            .register();
+
+    public static final RegistryEntry<SunderEnchantment> SUNDER_ENCHANTMENT = REGISTRATE
+            .enchantment("sunder", EnchantmentCategory.WEAPON, (rarity, type, slots) -> new SunderEnchantment(rarity, slots))
             .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();

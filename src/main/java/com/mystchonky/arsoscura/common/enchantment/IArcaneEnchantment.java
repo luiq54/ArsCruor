@@ -16,7 +16,6 @@ public interface IArcaneEnchantment {
         return getDefaultManaCost(stack);
     }
 
-
     default Component getNameWithStyle(Enchantment enchant, int pLevel) {
         MutableComponent mutablecomponent = Component.translatable(enchant.getDescriptionId());
         mutablecomponent.withStyle(ChatFormatting.LIGHT_PURPLE);
