@@ -37,13 +37,13 @@ public class ArsOscuraJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registry) {
-        List<ArcaneFusionRecipe> transmuatations = new ArrayList<>();
+        List<ArcaneFusionRecipe> fusions = new ArrayList<>();
         RecipeManager manager = Minecraft.getInstance().level.getRecipeManager();
         for (Recipe<?> i : manager.getRecipes()) {
             if (i instanceof ArcaneFusionRecipe recipe)
-                transmuatations.add(recipe);
+                fusions.add(recipe);
         }
-        registry.addRecipes(ARCANE_FUSION_RECIPE_TYPE, transmuatations);
+        registry.addRecipes(ARCANE_FUSION_RECIPE_TYPE, fusions);
     }
 
     @Override

@@ -1,6 +1,11 @@
-package com.mystchonky.arsoscura.common.glyphs;
+package com.mystchonky.arsoscura.common.glyph;
 
-import com.hollingsworth.arsnouveau.api.spell.*;
+import com.hollingsworth.arsnouveau.api.spell.AbstractAugment;
+import com.hollingsworth.arsnouveau.api.spell.AbstractCastMethod;
+import com.hollingsworth.arsnouveau.api.spell.CastResolveType;
+import com.hollingsworth.arsnouveau.api.spell.SpellContext;
+import com.hollingsworth.arsnouveau.api.spell.SpellResolver;
+import com.hollingsworth.arsnouveau.api.spell.SpellStats;
 import com.hollingsworth.arsnouveau.common.lib.GlyphLib;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.events;
+package com.mystchonky.arsoscura.common.event;
 
 
 import com.mystchonky.arsoscura.ArsOscura;

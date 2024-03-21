@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.enchantments;
+package com.mystchonky.arsoscura.common.enchantment;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,8 +8,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.TridentLoyaltyEnchantment;
 import org.jetbrains.annotations.NotNull;
 
-public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IArcaneEnchantment {
-    public FealtyEnchantment(Rarity rarity, EquipmentSlot... equipmentSlots) {
+public class ZealousEnchantment extends TridentLoyaltyEnchantment implements IArcaneEnchantment {
+    public ZealousEnchantment(Rarity rarity, EquipmentSlot... equipmentSlots) {
         super(rarity, equipmentSlots);
     }
 
@@ -18,11 +18,6 @@ public class FealtyEnchantment extends TridentLoyaltyEnchantment implements IArc
         return true;
     }
 
-    @Override
-    public boolean isAllowedOnBooks() {
-        return false;
-
-    }
     @Override
     public int getDefaultManaCost(ItemStack stack) {
         return 25;

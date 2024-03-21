@@ -5,13 +5,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
 import com.hollingsworth.arsnouveau.common.block.tile.EnchantingApparatusTile;
+import com.hollingsworth.arsnouveau.common.util.PortUtil;
 import com.hollingsworth.arsnouveau.setup.registry.RegistryHelper;
 import com.mystchonky.arsoscura.ArsOscura;
 import com.mystchonky.arsoscura.common.registrar.RecipeRegistrar;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -24,8 +27,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.hollingsworth.arsnouveau.setup.registry.RegistryHelper.getRegistryName;
 
@@ -65,18 +70,36 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
         return RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().get();
     }
 
+    // Override and move reagent match to the end, so we can give feedback
     @Override
-    public boolean doesReagentMatch(ItemStack stack) {
-        if (!reagent.test(stack))
-            return false;
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
-        int level = enchantments.getOrDefault(baseEnchantment, 0);
-        return level > 0;
+    public boolean isMatch(List<ItemStack> pedestalItems, ItemStack reagent, EnchantingApparatusTile enchantingApparatusTile, @javax.annotation.Nullable Player player) {
+        pedestalItems = pedestalItems.stream().filter(itemStack -> !itemStack.isEmpty()).collect(Collectors.toList());
+        return this.pedestalItems.size() == pedestalItems.size() && doItemsMatch(pedestalItems, this.pedestalItems) && doesReagentMatch(reagent, player);
     }
 
-    @Override
-    public ItemStack getResult(List<ItemStack> pedestalItems, ItemStack reagent, EnchantingApparatusTile enchantingApparatusTile) {
-        return assemble(enchantingApparatusTile, null);
+    public boolean doesReagentMatch(ItemStack stack, Player player) {
+        if (stack.isEmpty())
+            return false;
+
+        if (!(reagent.test(stack) || stack.getItem() == Items.ENCHANTED_BOOK))
+            return false;
+
+        Collection<Enchantment> enchantList = EnchantmentHelper.getEnchantments(stack).keySet();
+        enchantList.remove(baseEnchantment);
+        if (stack.getItem() != Items.BOOK && stack.getItem() != Items.ENCHANTED_BOOK && !resultEnchantment.canEnchant(stack)) {
+            PortUtil.sendMessage(player, Component.translatable("ars_nouveau.enchanting.incompatible"));
+            return false;
+        }
+
+        if (!EnchantmentHelper.isEnchantmentCompatible(enchantList, resultEnchantment)) {
+            PortUtil.sendMessage(player, Component.translatable("ars_nouveau.enchanting.incompatible"));
+            return false;
+        }
+
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        int level = enchantments.getOrDefault(baseEnchantment, 0);
+
+        return level > 0;
     }
 
     @Override
@@ -86,10 +109,15 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
         int level = enchantments.getOrDefault(baseEnchantment, 0);
         enchantments.remove(baseEnchantment);
         enchantments.put(resultEnchantment, level);
-        if (stack.getItem() == Items.ENCHANTED_BOOK)
+        if (stack.getItem() == Items.ENCHANTED_BOOK)  // reset stack with empty book
             stack = new ItemStack(Items.ENCHANTED_BOOK);
         EnchantmentHelper.setEnchantments(enchantments, stack);
         return stack;
+    }
+
+    @Override
+    public ItemStack getResult(List<ItemStack> pedestalItems, ItemStack reagent, EnchantingApparatusTile enchantingApparatusTile) {
+        return assemble(enchantingApparatusTile, null);
     }
 
     @Override

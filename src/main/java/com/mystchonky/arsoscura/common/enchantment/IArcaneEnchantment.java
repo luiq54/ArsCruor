@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.enchantments;
+package com.mystchonky.arsoscura.common.enchantment;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;

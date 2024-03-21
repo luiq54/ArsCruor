@@ -1,6 +1,5 @@
-package com.mystchonky.arsoscura.common.util;
+package com.mystchonky.arsoscura.common.enchantment;
 
-import com.mystchonky.arsoscura.common.enchantments.IArcaneEnchantment;
 import com.mystchonky.arsoscura.common.registrar.EnchantmentRegistrar;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -8,7 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.Map;
 import java.util.Optional;
 
-public class EnchantmentUtil {
+public class EnchantmentManager {
     public static boolean hasArcaneEnchantment(ItemStack stack) {
         Map<Enchantment, Integer> enchants = stack.getAllEnchantments();
         return enchants.keySet().stream().anyMatch(it -> it instanceof IArcaneEnchantment);
@@ -23,7 +22,7 @@ public class EnchantmentUtil {
         return stack.getEnchantmentLevel(EnchantmentRegistrar.TORRENT_ENCHANTMENT.get());
     }
 
-    public static int getFealty(ItemStack stack) {
-        return stack.getEnchantmentLevel(EnchantmentRegistrar.FEALTY_ENCHANTMENT.get());
+    public static int getZealous(ItemStack stack) {
+        return stack.getEnchantmentLevel(EnchantmentRegistrar.ZEALOUS_ENCHANTMENT.get());
     }
 }

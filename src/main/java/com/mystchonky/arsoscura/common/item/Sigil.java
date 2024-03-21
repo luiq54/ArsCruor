@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.items;
+package com.mystchonky.arsoscura.common.item;
 
 import net.minecraft.world.item.Item;
 

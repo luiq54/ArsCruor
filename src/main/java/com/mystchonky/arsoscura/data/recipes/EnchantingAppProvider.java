@@ -25,24 +25,24 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
 
     @Override
     public void collectJsons(CachedOutput pOutput) {
-        recipes.addAll(ArcaneFusionRecipeBuilder.builder()
+        recipes.add(ArcaneFusionRecipeBuilder.builder()
                 .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.JUMP_RING)
                 .withPedestalItem(ItemsRegistry.BELT_OF_LEVITATION)
                 .withBaseEnchantment(Enchantments.RIPTIDE)
                 .withResultEnchantment(EnchantmentRegistrar.TORRENT_ENCHANTMENT.get())
                 .withSourceCost(5000)
-                .buildWithBook());
+                .build());
 
-        recipes.addAll(ArcaneFusionRecipeBuilder.builder()
+        recipes.add(ArcaneFusionRecipeBuilder.builder()
                 .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.SPLASH_LAUNCHER)
                 .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
                 .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
                 .withBaseEnchantment(Enchantments.LOYALTY)
-                .withResultEnchantment(EnchantmentRegistrar.FEALTY_ENCHANTMENT.get())
+                .withResultEnchantment(EnchantmentRegistrar.ZEALOUS_ENCHANTMENT.get())
                 .withSourceCost(5000)
-                .buildWithBook());
+                .build());
 
         for (EnchantingApparatusRecipe g : recipes) {
             if (g != null) {

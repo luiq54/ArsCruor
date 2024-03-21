@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mystchonky.arsoscura.common.enchantments.FealtyEnchantment;
-import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
+import com.mystchonky.arsoscura.common.enchantment.EnchantmentManager;
+import com.mystchonky.arsoscura.common.enchantment.ZealousEnchantment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,7 +26,7 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
 
     @Override
     public boolean shouldDisplay(ItemStack stack) {
-        return EnchantmentUtil.hasArcaneEnchantment(stack);
+        return EnchantmentManager.hasArcaneEnchantment(stack);
     }
 
 
@@ -34,7 +34,7 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRiptide(Lnet/minecraft/world/item/ItemStack;)I"))
     public int getRiptideLevel(ItemStack stack, Operation<Integer> original) {
         if (EnchantmentHelper.getRiptide(stack) <= 0) {
-            return EnchantmentUtil.getTorrent(stack);
+            return EnchantmentManager.getTorrent(stack);
         }
         return original.call(stack);
     }
@@ -42,7 +42,7 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
     // Bypass Water check when using arcane enchants
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInWaterOrRain()Z"))
     public boolean isInWaterOrRain(Player player, Operation<Boolean> isWet) {
-        return isWet.call(player) || EnchantmentUtil.getTorrent(player.getMainHandItem()) > 0;
+        return isWet.call(player) || EnchantmentManager.getTorrent(player.getMainHandItem()) > 0;
     }
 
     // Stop removal of Trident from inventory when using Mana Layalty
@@ -52,9 +52,9 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
             return true;
         }
 
-        int level = EnchantmentUtil.getFealty(inputStack);
+        int level = EnchantmentManager.getZealous(inputStack);
         if (level > 0) {
-            player.getCooldowns().addCooldown(inputStack.getItem(), FealtyEnchantment.getCooldownInTicks(level));
+            player.getCooldowns().addCooldown(inputStack.getItem(), ZealousEnchantment.getCooldownInTicks(level));
             return false;
         }
         return true;
@@ -63,7 +63,7 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
     // Tridents with Mana loyalty should not be allowed to be picked up
     @ModifyArg(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"), index = 0)
     public Entity addFreshEntity(Entity entity, @Local(ordinal = 0) ItemStack stack) {
-        if (EnchantmentUtil.getFealty(stack) > 0) {
+        if (EnchantmentManager.getZealous(stack) > 0) {
             ((ThrownTrident) entity).pickup = AbstractArrow.Pickup.DISALLOWED;
         }
         return entity;

@@ -1,39 +1,76 @@
 package com.mystchonky.arsoscura.common.integration.jei;
 
-import com.hollingsworth.arsnouveau.client.jei.MultiInputCategory;
-import com.hollingsworth.arsnouveau.setup.registry.BlockRegistry;
+import com.hollingsworth.arsnouveau.client.jei.EnchantingApparatusRecipeCategory;
 import com.mystchonky.arsoscura.common.recipe.ArcaneFusionRecipe;
 import com.mystchonky.arsoscura.common.registrar.LangRegistrar;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.jetbrains.annotations.NotNull;
 
-public class ArcaneFusionRecipeCategory extends MultiInputCategory<ArcaneFusionRecipe> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
-    public IDrawable background;
-    public IDrawable icon;
+public class ArcaneFusionRecipeCategory extends EnchantingApparatusRecipeCategory<ArcaneFusionRecipe> {
 
     public ArcaneFusionRecipeCategory(IGuiHelper helper) {
-        super(helper, recipe -> {
-            ItemStack output = recipe.reagent.getItems()[0].copy();
-            output.enchant(recipe.resultEnchantment, 1);
+        super(helper);
+    }
 
-            ItemStack input = recipe.reagent.getItems()[0].copy();
-            input.enchant(recipe.baseEnchantment, 1);
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, ArcaneFusionRecipe recipe, IFocusGroup focuses) {
+        List<Ingredient> pedestalInputs = multiProvider.apply(recipe).input();
+        double angleBetweenEach = 360.0 / pedestalInputs.size();
 
-            return new MultiProvider(output, recipe.pedestalItems, Ingredient.of(input));
+        List<ItemStack> inputs = new ArrayList<>();
+        List<ItemStack> outputs = new ArrayList<>();
+
+        IntStream.rangeClosed(1, recipe.baseEnchantment.getMaxLevel()).forEach(level -> {
+            inputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(recipe.baseEnchantment, level)));
+            outputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(recipe.resultEnchantment, level)));
         });
-        background = helper.createBlankDrawable(114, 108);
-        icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.ENCHANTING_APP_BLOCK));
+
+        Arrays.stream(recipe.reagent.getItems()).forEach(reagent -> {
+            IntStream.rangeClosed(1, recipe.baseEnchantment.getMaxLevel()).forEach(level -> {
+                inputs.add(getEnchantedStack(reagent.copy(), recipe.baseEnchantment, level));
+                outputs.add(getEnchantedStack(reagent.copy(), recipe.resultEnchantment, level));
+            });
+        });
+
+
+        IRecipeSlotBuilder reagentSlot = builder.addSlot(RecipeIngredientRole.INPUT, 48, 45).addItemStacks(inputs);
+
+        for (Ingredient input : pedestalInputs) {
+            builder.addSlot(RecipeIngredientRole.INPUT, (int) point.x, (int) point.y)
+                    .addIngredients(input);
+            point = rotatePointAbout(point, center, angleBetweenEach);
+        }
+
+        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 86, 10).addItemStacks(outputs);
+
+        if (inputs.size() == outputs.size()) {
+            builder.createFocusLink(reagentSlot, outputSlot);
+        }
+    }
+
+    private ItemStack getEnchantedStack(ItemStack stack, Enchantment enchant, int level) {
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        enchantments.put(enchant, level);
+        EnchantmentHelper.setEnchantments(enchantments, stack);
+        return stack;
     }
 
     @Override
@@ -43,23 +80,7 @@ public class ArcaneFusionRecipeCategory extends MultiInputCategory<ArcaneFusionR
 
     @Override
     public @NotNull Component getTitle() {
-        return LangRegistrar.ENCHANTMENT_TRANSMUTATION;
+        return LangRegistrar.ARCANE_FUSION;
     }
 
-    @Override
-    public @NotNull IDrawable getBackground() {
-        return background;
-    }
-
-    @Override
-    public @NotNull IDrawable getIcon() {
-        return icon;
-    }
-
-    @Override
-    public void draw(ArcaneFusionRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Font renderer = Minecraft.getInstance().font;
-        if (recipe.consumesSource())
-            guiGraphics.drawString(renderer, Component.translatable("ars_nouveau.source", recipe.sourceCost), 0, 100, 10, false);
-    }
 }

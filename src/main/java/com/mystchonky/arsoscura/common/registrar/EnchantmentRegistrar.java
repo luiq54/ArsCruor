@@ -1,8 +1,8 @@
 package com.mystchonky.arsoscura.common.registrar;
 
 import com.mystchonky.arsoscura.ArsOscura;
-import com.mystchonky.arsoscura.common.enchantments.FealtyEnchantment;
-import com.mystchonky.arsoscura.common.enchantments.TorrentEnchantment;
+import com.mystchonky.arsoscura.common.enchantment.TorrentEnchantment;
+import com.mystchonky.arsoscura.common.enchantment.ZealousEnchantment;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,8 +18,8 @@ public class EnchantmentRegistrar {
             .addSlots(EquipmentSlot.MAINHAND)
             .register();
 
-    public static final RegistryEntry<FealtyEnchantment> FEALTY_ENCHANTMENT = REGISTRATE
-            .enchantment("fealty", EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new FealtyEnchantment(rarity, slots))
+    public static final RegistryEntry<ZealousEnchantment> ZEALOUS_ENCHANTMENT = REGISTRATE
+            .enchantment("zealous", EnchantmentCategory.TRIDENT, (rarity, type, slots) -> new ZealousEnchantment(rarity, slots))
             .rarity(Enchantment.Rarity.VERY_RARE)
             .addSlots(EquipmentSlot.MAINHAND)
             .register();

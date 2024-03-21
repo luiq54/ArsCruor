@@ -1,7 +1,7 @@
-package com.mystchonky.arsoscura.common.events;
+package com.mystchonky.arsoscura.common.event;
 
-import com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry;
-import com.mystchonky.arsoscura.common.util.EnchantmentUtil;
+import com.mystchonky.arsoscura.common.enchantment.EnchantmentManager;
+import com.mystchonky.arsoscura.common.mana.ManaManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
@@ -18,13 +18,10 @@ public class ArcaneEventHandler {
 
         ItemStack stack = event.getItem();
         if (stack.getItem() instanceof TridentItem) {
-            EnchantmentUtil.getArcaneEnchantment(stack).ifPresent(enchant -> {
-                int manaCost = enchant.getCastingCost(player, stack);
-                CapabilityRegistry.getMana(player).ifPresent(manaCap -> {
-                    if (manaCap.getCurrentMana() < manaCost) {
-                        event.setCanceled(true);
-                    }
-                });
+            EnchantmentManager.getArcaneEnchantment(stack).ifPresent(enchant -> {
+                if (!ManaManager.enoughMana(player, enchant.getCastingCost(player, stack))) {
+                    event.setCanceled(true);
+                }
             });
         }
     }
@@ -35,10 +32,10 @@ public class ArcaneEventHandler {
 
         ItemStack stack = event.getItem();
         if (stack.getItem() instanceof TridentItem) {
-            if (EnchantmentUtil.getTorrent(stack) > 0 && player.isInWaterOrRain()) return;
+            if (EnchantmentManager.getTorrent(stack) > 0 && player.isInWaterOrRain()) return;
 
-            EnchantmentUtil.getArcaneEnchantment(stack).ifPresent(enchant -> {
-                CapabilityRegistry.getMana(player).ifPresent(manaCap -> manaCap.removeMana(enchant.getCastingCost(player, stack)));
+            EnchantmentManager.getArcaneEnchantment(stack).ifPresent(enchant -> {
+                ManaManager.consumeMana(player, enchant.getCastingCost(player, stack));
             });
         }
     }

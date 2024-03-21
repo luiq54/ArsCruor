@@ -1,4 +1,4 @@
-package com.mystchonky.arsoscura.common.enchantments;
+package com.mystchonky.arsoscura.common.enchantment;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -10,8 +10,8 @@ import net.minecraft.world.item.enchantment.TridentRiptideEnchantment;
 import org.jetbrains.annotations.NotNull;
 
 public class TorrentEnchantment extends TridentRiptideEnchantment implements IArcaneEnchantment {
-    public TorrentEnchantment(Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, pApplicableSlots);
+    public TorrentEnchantment(Rarity rarity, EquipmentSlot... equipmentSlots) {
+        super(rarity, equipmentSlots);
     }
 
     @Override
