@@ -1,10 +1,14 @@
 {
-  "type": "ars_oscura:enchantment_transmute",
-  "baseEnchantment": "minecraft:loyalty",
+  "type": "ars_oscura:arcane_fusion",
+  "baseEnchantments": [
+    {
+      "enchantment": "minecraft:loyalty"
+    }
+  ],
   "pedestalItems": [
     {
       "item": {
-        "item": "ars_nouveau:splash_flask_cannon"
+        "item": "ars_nouveau:spell_bow"
       }
     },
     {
@@ -14,13 +18,13 @@
     },
     {
       "item": {
-        "item": "ars_nouveau:amplify_arrow"
+        "item": "ars_nouveau:conjuration_essence"
       }
-    }
-  ],
-  "reagent": [
+    },
     {
-      "tag": "forge:tools/tridents"
+      "item": {
+        "item": "ars_nouveau:conjuration_essence"
+      }
     }
   ],
   "resultEnchantment": "ars_oscura:zealous",

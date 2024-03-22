@@ -1,6 +1,10 @@
 {
-  "type": "ars_oscura:enchantment_transmute",
-  "baseEnchantment": "minecraft:riptide",
+  "type": "ars_oscura:arcane_fusion",
+  "baseEnchantments": [
+    {
+      "enchantment": "minecraft:riptide"
+    }
+  ],
   "pedestalItems": [
     {
       "item": {
@@ -11,11 +15,16 @@
       "item": {
         "item": "ars_nouveau:belt_of_levitation"
       }
-    }
-  ],
-  "reagent": [
+    },
     {
-      "tag": "forge:tools/tridents"
+      "item": {
+        "item": "ars_nouveau:water_essence"
+      }
+    },
+    {
+      "item": {
+        "item": "ars_nouveau:water_essence"
+      }
     }
   ],
   "resultEnchantment": "ars_oscura:torrent",

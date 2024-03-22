@@ -30,34 +30,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.hollingsworth.arsnouveau.setup.registry.RegistryHelper.getRegistryName;
 
 public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
-    public Enchantment baseEnchantment;
+    public List<Enchantment> baseEnchantments;
     public Enchantment resultEnchantment;
 
     public ArcaneFusionRecipe() {
-        this.reagent = Ingredient.EMPTY;
         this.pedestalItems = new ArrayList<>();
-        this.baseEnchantment = Enchantments.BINDING_CURSE;
+        this.baseEnchantments = new ArrayList<>();
         this.resultEnchantment = Enchantments.BINDING_CURSE;
         this.sourceCost = 0;
         this.id = new ResourceLocation(ArsOscura.MODID, "empty");
     }
 
-    public ArcaneFusionRecipe(ResourceLocation id, Ingredient reagent, List<Ingredient> pedestalItems, Enchantment baseEnchantment, Enchantment resultEnchantment, int sourceCost) {
+    public ArcaneFusionRecipe(ResourceLocation id, List<Ingredient> pedestalItems, List<Enchantment> baseEnchantments, Enchantment resultEnchantment, int sourceCost) {
         this.id = id;
-        this.reagent = reagent;
         this.pedestalItems = pedestalItems;
-        this.baseEnchantment = baseEnchantment;
+        this.baseEnchantments = baseEnchantments;
         this.resultEnchantment = resultEnchantment;
         this.sourceCost = sourceCost;
-    }
-
-    public ArcaneFusionRecipe copy() {
-        return new ArcaneFusionRecipe(this.id, this.reagent, this.pedestalItems, this.baseEnchantment, this.resultEnchantment, this.sourceCost);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().get();
+        return RecipeRegistrar.ARCANE_FUSION.type().get();
     }
 
     // Override and move reagent match to the end, so we can give feedback
@@ -81,38 +76,47 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
         if (stack.isEmpty())
             return false;
 
-        if (!(reagent.test(stack) || stack.getItem() == Items.ENCHANTED_BOOK))
-            return false;
 
-        Collection<Enchantment> enchantList = EnchantmentHelper.getEnchantments(stack).keySet();
-        enchantList.remove(baseEnchantment);
         if (stack.getItem() != Items.BOOK && stack.getItem() != Items.ENCHANTED_BOOK && !resultEnchantment.canEnchant(stack)) {
             PortUtil.sendMessage(player, Component.translatable("ars_nouveau.enchanting.incompatible"));
             return false;
         }
+
+        Collection<Enchantment> enchantList = EnchantmentHelper.getEnchantments(stack).keySet();
+        enchantList.removeIf(it -> baseEnchantments.contains(it));
 
         if (!EnchantmentHelper.isEnchantmentCompatible(enchantList, resultEnchantment)) {
             PortUtil.sendMessage(player, Component.translatable("ars_nouveau.enchanting.incompatible"));
             return false;
         }
 
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
-        int level = enchantments.getOrDefault(baseEnchantment, 0);
-
-        return level > 0;
+        Map<Enchantment, Integer> stackEnchants = EnchantmentHelper.getEnchantments(stack);
+        Optional<Enchantment> target = getTargetEnchantment(stackEnchants);
+        if (target.isPresent()) {
+            int level = stackEnchants.getOrDefault(target.get(), 0);
+            return level > 0;
+        }
+        return false;
     }
 
     @Override
     public ItemStack assemble(EnchantingApparatusTile inv, RegistryAccess access) {
         ItemStack stack = inv.getStack().copy();
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
-        int level = enchantments.getOrDefault(baseEnchantment, 0);
-        enchantments.remove(baseEnchantment);
-        enchantments.put(resultEnchantment, level);
+        Map<Enchantment, Integer> stackEnchants = EnchantmentHelper.getEnchantments(stack);
+        Optional<Enchantment> target = getTargetEnchantment(stackEnchants);
+        if (target.isPresent()) {
+            int level = stackEnchants.getOrDefault(target.get(), 0);
+            stackEnchants.remove(target.get());
+            stackEnchants.put(resultEnchantment, level);
+        }
         if (stack.getItem() == Items.ENCHANTED_BOOK)  // reset stack with empty book
             stack = new ItemStack(Items.ENCHANTED_BOOK);
-        EnchantmentHelper.setEnchantments(enchantments, stack);
+        EnchantmentHelper.setEnchantments(stackEnchants, stack);
         return stack;
+    }
+
+    private Optional<Enchantment> getTargetEnchantment(Map<Enchantment, Integer> enchants) {
+        return baseEnchantments.stream().filter(enchants::containsKey).findFirst();
     }
 
     @Override
@@ -122,14 +126,22 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeRegistrar.ENCHANTMENT_UPAGRADE.serializer().get();
+        return RecipeRegistrar.ARCANE_FUSION.serializer().get();
     }
 
     @Override
     public JsonElement asRecipe() {
         JsonObject jsonobject = new JsonObject();
-        jsonobject.addProperty("type", RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().getId().toString());
-        jsonobject.addProperty("baseEnchantment", RegistryHelper.getRegistryName(baseEnchantment).toString());
+        jsonobject.addProperty("type", RecipeRegistrar.ARCANE_FUSION.type().getId().toString());
+
+        JsonArray enchantArr = new JsonArray();
+        for (Enchantment enchant : this.baseEnchantments) {
+            JsonObject object = new JsonObject();
+            object.addProperty("enchantment", RegistryHelper.getRegistryName(enchant).toString());
+            enchantArr.add(object);
+        }
+        jsonobject.add("baseEnchantments", enchantArr);
+
         jsonobject.addProperty("resultEnchantment", RegistryHelper.getRegistryName(resultEnchantment).toString());
         jsonobject.addProperty("sourceCost", getSourceCost());
 
@@ -141,10 +153,6 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
         }
         jsonobject.add("pedestalItems", pedestalArr);
 
-        JsonArray reagent = new JsonArray();
-        reagent.add(this.reagent.toJson());
-        jsonobject.add("reagent", reagent);
-
         return jsonobject;
     }
 
@@ -152,14 +160,18 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
 
         @Override
         public ArcaneFusionRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            Enchantment baseEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "baseEnchantment")));
+            JsonArray baseEnchants = GsonHelper.getAsJsonArray(json, "baseEnchantments");
+            List<Enchantment> enchants = new ArrayList<>();
+            for (JsonElement e : baseEnchants) {
+                JsonObject obj = e.getAsJsonObject();
+                Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(obj, "enchantment")));
+                enchants.add(enchant);
+            }
             Enchantment resultEnchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(GsonHelper.getAsString(json, "resultEnchantment")));
             int manaCost = GsonHelper.getAsInt(json, "sourceCost", 0);
+
             JsonArray pedestalItems = GsonHelper.getAsJsonArray(json, "pedestalItems");
-            Ingredient reagent = Ingredient.fromJson(GsonHelper.getAsJsonArray(json, "reagent"));
-
             List<Ingredient> stacks = new ArrayList<>();
-
             for (JsonElement e : pedestalItems) {
                 JsonObject obj = e.getAsJsonObject();
                 Ingredient input;
@@ -170,18 +182,28 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
                 }
                 stacks.add(input);
             }
-            return new ArcaneFusionRecipe(recipeId, reagent, stacks, baseEnchantment, resultEnchantment, manaCost);
+
+            return new ArcaneFusionRecipe(recipeId, stacks, enchants, resultEnchantment, manaCost);
         }
 
         @Override
         public @Nullable ArcaneFusionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             int length = buffer.readInt();
-            Ingredient reagent = Ingredient.fromNetwork(buffer);
-            String baseEnchantID = buffer.readUtf();
+
+            List<Enchantment> enchants = new ArrayList<>();
+            for (int i = 0; i < length; i++) {
+                try {
+                    String id = buffer.readUtf();
+                    enchants.add(ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(id)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
             String resultEnchantID = buffer.readUtf();
             int manaCost = buffer.readInt();
-            List<Ingredient> stacks = new ArrayList<>();
 
+            List<Ingredient> stacks = new ArrayList<>();
             for (int i = 0; i < length; i++) {
                 try {
                     stacks.add(Ingredient.fromNetwork(buffer));
@@ -190,14 +212,15 @@ public class ArcaneFusionRecipe extends EnchantingApparatusRecipe {
                     break;
                 }
             }
-            return new ArcaneFusionRecipe(recipeId, reagent, stacks, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(baseEnchantID)), ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
+            return new ArcaneFusionRecipe(recipeId, stacks, enchants, ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(resultEnchantID)), manaCost);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, ArcaneFusionRecipe recipe) {
             buf.writeInt(recipe.pedestalItems.size());
-            recipe.reagent.toNetwork(buf);
-            buf.writeUtf(getRegistryName(recipe.baseEnchantment).toString());
+            for (Enchantment enchant : recipe.baseEnchantments) {
+                buf.writeUtf(getRegistryName(enchant).toString());
+            }
             buf.writeUtf(getRegistryName(recipe.resultEnchantment).toString());
             buf.writeInt(recipe.getSourceCost());
             for (Ingredient i : recipe.pedestalItems) {

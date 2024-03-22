@@ -18,7 +18,7 @@ public class IntegrationRegistrar {
     }
 
     public static void postInit() {
-        ArsNouveau.getEnchantingRecipeTypes().add(RecipeRegistrar.ENCHANTMENT_UPAGRADE.type().get());
+        ArsNouveau.getEnchantingRecipeTypes().add(RecipeRegistrar.ARCANE_FUSION.type().get());
     }
 
 }

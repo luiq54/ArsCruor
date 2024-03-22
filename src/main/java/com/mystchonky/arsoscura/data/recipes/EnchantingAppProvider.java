@@ -2,14 +2,14 @@ package com.mystchonky.arsoscura.data.recipes;
 
 import com.hollingsworth.arsnouveau.api.enchanting_apparatus.EnchantingApparatusRecipe;
 import com.hollingsworth.arsnouveau.common.datagen.ApparatusRecipeProvider;
+import com.hollingsworth.arsnouveau.setup.registry.BlockRegistry;
 import com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry;
 import com.mystchonky.arsoscura.common.registrar.EnchantmentRegistrar;
 import com.mystchonky.arsoscura.data.DataProvider;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.common.Tags;
 
 import java.nio.file.Path;
 
@@ -26,7 +26,6 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
     @Override
     public void collectJsons(CachedOutput pOutput) {
         recipes.add(ArcaneFusionRecipeBuilder.builder()
-                .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.JUMP_RING)
                 .withPedestalItem(ItemsRegistry.BELT_OF_LEVITATION)
                 .withPedestalItem(ItemsRegistry.WATER_ESSENCE)
@@ -37,7 +36,6 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
                 .build());
 
         recipes.add(ArcaneFusionRecipeBuilder.builder()
-                .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
                 .withPedestalItem(ItemsRegistry.SPELL_BOW)
                 .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
                 .withPedestalItem(ItemsRegistry.CONJURATION_ESSENCE)
@@ -48,13 +46,14 @@ public class EnchantingAppProvider extends ApparatusRecipeProvider {
                 .build());
 
         recipes.add(ArcaneFusionRecipeBuilder.builder()
-                .withItem(Ingredient.of(Tags.Items.TOOLS_TRIDENTS))
-                .withPedestalItem(ItemsRegistry.SPELL_BOW)
-                .withPedestalItem(ItemsRegistry.AMPLIFY_ARROW)
-                .withPedestalItem(ItemsRegistry.CONJURATION_ESSENCE)
-                .withPedestalItem(ItemsRegistry.CONJURATION_ESSENCE)
-                .withBaseEnchantment(Enchantments.LOYALTY)
-                .withResultEnchantment(EnchantmentRegistrar.ZEALOUS_ENCHANTMENT.get())
+                .withPedestalItem(Items.DIAMOND_SWORD)
+                .withPedestalItem(BlockRegistry.SOURCE_GEM_BLOCK)
+                .withPedestalItem(ItemsRegistry.ABJURATION_ESSENCE)
+                .withPedestalItem(ItemsRegistry.ABJURATION_ESSENCE)
+                .withBaseEnchantment(Enchantments.SHARPNESS)
+                .withBaseEnchantment(Enchantments.SMITE)
+                .withBaseEnchantment(Enchantments.BANE_OF_ARTHROPODS)
+                .withResultEnchantment(EnchantmentRegistrar.SUNDER_ENCHANTMENT.get())
                 .withSourceCost(5000)
                 .build());
 

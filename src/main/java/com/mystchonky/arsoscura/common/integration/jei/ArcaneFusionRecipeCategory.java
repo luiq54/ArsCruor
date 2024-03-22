@@ -19,7 +19,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -38,17 +37,21 @@ public class ArcaneFusionRecipeCategory extends EnchantingApparatusRecipeCategor
         List<ItemStack> inputs = new ArrayList<>();
         List<ItemStack> outputs = new ArrayList<>();
 
-        IntStream.rangeClosed(1, recipe.baseEnchantment.getMaxLevel()).forEach(level -> {
-            inputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(recipe.baseEnchantment, level)));
-            outputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(recipe.resultEnchantment, level)));
-        });
+        recipe.baseEnchantments.forEach(enchantment ->
+                IntStream.rangeClosed(1, enchantment.getMaxLevel()).forEach(level -> {
+                    inputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, level)));
+                    outputs.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(recipe.resultEnchantment, level)));
+                })
+        );
 
-        Arrays.stream(recipe.reagent.getItems()).forEach(reagent -> {
-            IntStream.rangeClosed(1, recipe.baseEnchantment.getMaxLevel()).forEach(level -> {
-                inputs.add(getEnchantedStack(reagent.copy(), recipe.baseEnchantment, level));
-                outputs.add(getEnchantedStack(reagent.copy(), recipe.resultEnchantment, level));
-            });
-        });
+//        Arrays.stream(recipe.reagent.getItems()).forEach(reagent -> {
+//            recipe.baseEnchantments.forEach(enchantment ->
+//                    IntStream.rangeClosed(1, enchantment.getMaxLevel()).forEach(level -> {
+//                        inputs.add(getEnchantedStack(reagent.copy(), enchantment, level));
+//                        outputs.add(getEnchantedStack(reagent.copy(), recipe.resultEnchantment, level));
+//                    })
+//            );
+//        });
 
 
         IRecipeSlotBuilder reagentSlot = builder.addSlot(RecipeIngredientRole.INPUT, 48, 45).addItemStacks(inputs);

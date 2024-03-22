@@ -18,7 +18,7 @@ public class RecipeRegistrar {
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, ArsOscura.MODID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ArsOscura.MODID);
 
-    public static final RecipeTypeSerializerPair<ArcaneFusionRecipe, ArcaneFusionRecipe.Serializer> ENCHANTMENT_UPAGRADE = register("enchantment_transmute", ArcaneFusionRecipe.Serializer::new);
+    public static final RecipeTypeSerializerPair<ArcaneFusionRecipe, ArcaneFusionRecipe.Serializer> ARCANE_FUSION = register("arcane_fusion", ArcaneFusionRecipe.Serializer::new);
 
     private static <I extends Recipe<?>> RegistryObject<RecipeType<I>> registerType(String name) {
         return RECIPE_TYPES.register(name, () -> RecipeType.simple(ArsOscura.prefix(name)));

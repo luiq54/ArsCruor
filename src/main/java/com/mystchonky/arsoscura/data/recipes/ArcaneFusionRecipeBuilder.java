@@ -23,13 +23,9 @@ public class ArcaneFusionRecipeBuilder {
         return new ArcaneFusionRecipeBuilder();
     }
 
-    public ArcaneFusionRecipeBuilder withItem(Ingredient item) {
-        this.recipe.reagent = item;
-        return this;
-    }
 
     public ArcaneFusionRecipeBuilder withBaseEnchantment(Enchantment enchantment) {
-        this.recipe.baseEnchantment = enchantment;
+        this.recipe.baseEnchantments.add(enchantment);
         return this;
     }
 
