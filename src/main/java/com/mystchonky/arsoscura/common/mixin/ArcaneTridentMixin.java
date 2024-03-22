@@ -1,13 +1,12 @@
 package com.mystchonky.arsoscura.common.mixin;
 
 import com.hollingsworth.arsnouveau.api.client.IDisplayMana;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mystchonky.arsoscura.common.enchantment.EnchantmentManager;
 import com.mystchonky.arsoscura.common.enchantment.ZealousEnchantment;
-import net.minecraft.world.entity.Entity;
+import com.mystchonky.arsoscura.common.entity.ZealousThrownTrident;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +18,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(TridentItem.class)
 public abstract class ArcaneTridentMixin implements IDisplayMana {
@@ -38,13 +36,13 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
         return original.call(stack);
     }
 
-    // Bypass Water check when using arcane enchants
+    // Bypass Water check when using Torrent
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInWaterOrRain()Z"))
     public boolean isInWaterOrRain(Player player, Operation<Boolean> isWet) {
         return isWet.call(player) || EnchantmentManager.getTorrent(player.getMainHandItem()) > 0;
     }
 
-    // Stop removal of Trident from inventory when using Mana Layalty
+    // Stop removal of Trident from inventory when using Zealous
     @WrapWithCondition(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;removeItem(Lnet/minecraft/world/item/ItemStack;)V"))
     public boolean removeItem(Inventory inventory, ItemStack inputStack, ItemStack methodStack, Level pLevel, LivingEntity livingEntity, int pTimeLeft) {
         if (!(livingEntity instanceof Player player)) {
@@ -59,13 +57,15 @@ public abstract class ArcaneTridentMixin implements IDisplayMana {
         return true;
     }
 
-    // Tridents with Mana loyalty should not be allowed to be picked up
-    @ModifyArg(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"), index = 0)
-    public Entity addFreshEntity(Entity entity, @Local(ordinal = 0) ItemStack stack) {
+    // Thrown Tridents with Zealous should have different properties
+    @WrapOperation(method = "releaseUsing", at = @At(value = "NEW", target = "(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/projectile/ThrownTrident;"))
+    public ThrownTrident swapZealousTrident(Level level, LivingEntity livingEntity, ItemStack stack, Operation<ThrownTrident> original) {
         if (EnchantmentManager.getZealous(stack) > 0) {
-            ((ThrownTrident) entity).pickup = AbstractArrow.Pickup.DISALLOWED;
+            ZealousThrownTrident trident = new ZealousThrownTrident(level, livingEntity, stack);
+            trident.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+            return trident;
         }
-        return entity;
+        return original.call(level, livingEntity, stack);
     }
 
 }

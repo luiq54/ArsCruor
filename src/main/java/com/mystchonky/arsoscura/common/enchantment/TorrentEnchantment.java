@@ -19,14 +19,13 @@ public class TorrentEnchantment extends TridentRiptideEnchantment implements IAr
         return true;
     }
 
-    @Override
-    public int getDefaultManaCost(ItemStack stack) {
-        return 100;
+    public int defaultCastingCost() {
+        return 50;
     }
 
     @Override
     public int getCastingCost(Player player, ItemStack stack) {
-        return player.isInWaterOrRain() ? 0 : IArcaneEnchantment.super.getCastingCost(player, stack);
+        return player.isInWaterOrRain() ? 0 : defaultCastingCost();
     }
 
     public boolean checkCompatibility(@NotNull Enchantment enchant) {

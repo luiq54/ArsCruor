@@ -2,6 +2,7 @@ package com.mystchonky.arsoscura.common.enchantment;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -19,8 +20,8 @@ public class ZealousEnchantment extends TridentLoyaltyEnchantment implements IAr
     }
 
     @Override
-    public int getDefaultManaCost(ItemStack stack) {
-        return 25;
+    public int getCastingCost(Player player, ItemStack stack) {
+        return 25 + ((EnchantmentManager.getZealous(stack) - 1) * 15);
     }
 
     public boolean checkCompatibility(@NotNull Enchantment enchant) {
@@ -29,11 +30,11 @@ public class ZealousEnchantment extends TridentLoyaltyEnchantment implements IAr
 
     //TODO Configs
     public static int getCooldownInTicks(int level) {
-        int cooldown = 5;
+        int cooldown = 6;
         if (level > 1)
-            cooldown = 3;
+            cooldown = 4;
         if (level > 2)
-            cooldown = 1;
+            cooldown = 2;
 
         return cooldown * 20;
     }

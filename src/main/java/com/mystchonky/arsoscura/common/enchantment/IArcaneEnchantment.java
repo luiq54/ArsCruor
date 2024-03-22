@@ -9,12 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public interface IArcaneEnchantment {
-    int getDefaultManaCost(ItemStack stack);
 
     // TODO: add config wrapper
-    default int getCastingCost(Player player, ItemStack stack) {
-        return getDefaultManaCost(stack);
-    }
+    int getCastingCost(Player player, ItemStack stack);
 
     default Component getNameWithStyle(Enchantment enchant, int pLevel) {
         MutableComponent mutablecomponent = Component.translatable(enchant.getDescriptionId());

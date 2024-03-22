@@ -2,6 +2,7 @@ package com.mystchonky.arsoscura.common.enchantment;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -18,7 +19,7 @@ public class SunderEnchantment extends DamageEnchantment implements IArcaneEncha
     }
 
     @Override
-    public int getDefaultManaCost(ItemStack stack) {
+    public int getCastingCost(Player player, ItemStack stack) {
         int level = EnchantmentManager.getSunder(stack);
         return 30 + (level * 10);
     }

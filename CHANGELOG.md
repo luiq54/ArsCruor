@@ -6,4 +6,8 @@ Initial Build
 
 ### Added
 
-- Enchantment upgrades! 
+- Arcane Fusion
+- Arcane Enchantments
+    - Torrent
+    - Zealous
+    - Sunder
